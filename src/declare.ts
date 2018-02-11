@@ -1,5 +1,14 @@
 declare module '*.less' {
-  const content: any;
+  const content: {
+    [key: string]: string
+  };
+  export default content;
+}
+
+declare module '*.css' {
+  const content: {
+    [key: string]: string
+  };
   export default content;
 }
 

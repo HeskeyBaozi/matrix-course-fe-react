@@ -1,13 +1,18 @@
 'use strict';
 
 const tsImportPluginFactory = require('ts-import-plugin');
-const { getLoader } = require('react-app-rewired');
+const { getLoader, compose } = require('react-app-rewired');
 const rewireLess = require('react-app-rewire-less');
 const theme = require('./theme');
 
-module.exports = function (config, env) {
-  console.log('[Current Env] ', env);
+module.exports = compose(
+  rewireTypescriptImport,
+  rewireLess.withLoaderOptions({
+    modifyVars: theme
+  })
+);
 
+function rewireTypescriptImport(config, env) {
   const tsLoader = getLoader(
     config.module.rules,
     rule =>
@@ -27,10 +32,5 @@ module.exports = function (config, env) {
       ]
     })
   };
-
-  config = rewireLess.withLoaderOptions({
-    modifyVars: theme,
-  })(config, env);
-
   return config;
-};
+}

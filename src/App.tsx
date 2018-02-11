@@ -1,5 +1,6 @@
-import * as React from 'react';
-import './App.css';
+import { Button } from 'antd';
+import React from 'react';
+import styles from './App.module.css';
 import logo from './logo.svg';
 
 class App extends React.Component {
@@ -9,15 +10,19 @@ class App extends React.Component {
   }
 
   render() {
+    console.log('styles', styles);
     return (
-      <div className='App'>
-        <header className='App-header'>
-          <img src={ logo } className='App-logo' alt='logo'/>
-          <h1 className='App-title'>Welcome to React</h1>
+      <div className={ styles.App }>
+        <header className={ styles[ 'App-header' ] }>
+          <img src={ logo } className={ styles.hello } alt='logo'/>
+          <h1 className={ styles.hello }>Welcome to React</h1>
         </header>
-        <p className='App-intro'>
+        <p className={ styles[ 'App-intro' ] }>
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
+        <div>
+          <Button icon={ 'smile-o' } type={ 'primary' }>Hello</Button>
+        </div>
       </div>
     );
   }
