@@ -1,7 +1,7 @@
 const tsImportPluginFactory = require('ts-import-plugin');
 const { getLoader } = require('react-app-rewired');
 
-module.exports = function rewireTypescriptImport(config, env) {
+module.exports = function (config, env) {
   const tsLoader = getLoader(
     config.module.rules,
     rule =>
