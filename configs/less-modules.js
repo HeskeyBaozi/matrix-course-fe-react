@@ -1,3 +1,10 @@
+/**
+ * This rewire config is dependent with react-app-rewire-less
+ * https://github.com/timarney/react-app-rewired/tree/master/packages/react-app-rewire-less
+ *
+ * it doesn't work with less 3.x for some relative path issues.
+ */
+
 const cloneDeep = require('lodash.clonedeep');
 const path = require('path');
 
