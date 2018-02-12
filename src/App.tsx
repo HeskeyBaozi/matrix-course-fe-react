@@ -5,6 +5,7 @@ import React from 'react';
 import styles from './App.module.css';
 import CodeEditor from './components/CodeEditor';
 import Markdown from './components/Markdown';
+import MarkdownEditor from './components/MarkdownEditor';
 import logo from './logo.svg';
 
 const cppCode = `
@@ -59,7 +60,7 @@ class App extends React.Component {
           >Hello
           </Button>
         </div>
-        <CodeEditor dataSource={ this.dataSource } onChange={ this.handleChange }/>
+        <MarkdownEditor value={ '## Hello, World' }/>
       </div>
     );
   }
