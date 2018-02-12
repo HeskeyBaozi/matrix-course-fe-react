@@ -1,36 +1,15 @@
 'use strict';
 
-const tsImportPluginFactory = require('ts-import-plugin');
-const { getLoader, compose } = require('react-app-rewired');
-const rewireLess = require('react-app-rewire-less');
-const theme = require('./theme');
+const { compose } = require('react-app-rewired');
+const rewireLess = require('./configs/less-modules');
+const rewireTypescriptImport = require('./configs/ts-import');
+const theme = require('./configs/theme');
 
 module.exports = compose(
   rewireTypescriptImport,
-  rewireLess.withLoaderOptions({
-    modifyVars: theme
-  })
-);
-
-function rewireTypescriptImport(config, env) {
-  const tsLoader = getLoader(
-    config.module.rules,
-    rule =>
-      rule.loader &&
-      typeof rule.loader === 'string' &&
-      rule.loader.includes('ts-loader')
-  );
-
-  tsLoader.options = {
-    getCustomTransformers: () => ({
-      before: [
-        tsImportPluginFactory({
-          libraryName: 'antd',
-          libraryDirectory: 'es',
-          style: true,
-        })
-      ]
+  rewireLess.withLoaderOptions(
+    '[local]___[hash:base64:5]',
+    {
+      modifyVars: theme
     })
-  };
-  return config;
-}
+);
