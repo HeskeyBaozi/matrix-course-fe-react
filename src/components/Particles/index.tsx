@@ -2,8 +2,8 @@ import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import 'particles.js';
 import React from 'react';
-import particlesConfig from '../../assets/jsons/particlesjs-config.json';
 import styles from './index.module.css';
+import particlesConfig from './particlesjs-config.json';
 
 declare const particlesJS: (id: string, config: object) => void;
 declare const pJSDom: any[];
