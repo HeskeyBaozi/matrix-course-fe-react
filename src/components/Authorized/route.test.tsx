@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import {  mount, shallow } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import { createMemoryHistory } from 'history';
 import React from 'react';
 import { Router, Switch } from 'react-router';

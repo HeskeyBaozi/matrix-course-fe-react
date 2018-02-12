@@ -16,8 +16,11 @@
     "react-dom": "^16.2.0",
     "react-loadable": "^5.3.1",
     "react-markdown": "^3.1.5",
+    "react-mathjax": "https://github.com/wko27/react-mathjax",
     "react-router": "^4.2.0",
-    "react-scripts-ts": "2.13.0"
+    "react-scripts-ts": "2.13.0",
+    "remark-math": "^1.0.3",
+    "remark-parse": "^5.0.0"
   },
   "scripts": {
     "start": "react-app-rewired start --scripts-version react-scripts-ts",

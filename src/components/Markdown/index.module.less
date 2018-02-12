@@ -1,0 +1,41 @@
+@import "~antd/lib/style/themes/default.less";
+
+.image {
+  max-width: 100%
+}
+
+.codeFamily {
+  font-family: @code-family !important;
+}
+
+.inlineCode {
+  background-color: rgba(0, 0, 0, .05) !important;
+  padding: .2rem .3rem !important;
+  margin: 0 .2rem !important;
+  border-radius: 2px !important;
+  color: @primary-color !important;
+}
+
+.math {
+  text-align: center;
+}
+
+.table {
+  width: 100%;
+  margin: 1rem 0;
+  > thead {
+    border-bottom: 1px solid mix(@primary-color, white, 20%);
+  }
+  th,
+  td {
+    padding: .5rem;
+  }
+  > tbody {
+    tr {
+      transition: all 200ms;
+      &:hover {
+        background-color: mix(@primary-color, white, 5%);
+      }
+    }
+  }
+}

@@ -1,10 +1,13 @@
 import { Button } from 'antd';
 import React from 'react';
 import styles from './App.module.css';
-import CodeBlock from './components/CodeBlock';
+import Markdown from './components/Markdown';
 import logo from './logo.svg';
 
 const cppCode = `
+## hello
+
+\`\`\`cpp
 #include <iostream>
 using namespace std;
 
@@ -13,6 +16,13 @@ int main() {
   cout << "Hello, World" << a << endl;
   return 0;
 }
+\`\`\`
+
+> [233](http://test)
+
+$$
+E = mc^2
+$$
 `;
 
 class App extends React.Component {
@@ -30,7 +40,7 @@ class App extends React.Component {
         <div>
           <Button icon={ 'smile-o' } type={ 'primary' }>Hello</Button>
         </div>
-        <CodeBlock value={ cppCode } readOnly={ true } filename={ '.cpp' }/>
+        <Markdown source={ cppCode }/>
       </div>
     );
   }
