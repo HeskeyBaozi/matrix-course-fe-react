@@ -1,16 +1,12 @@
 import { Button } from 'antd';
 import React from 'react';
 import styles from './App.module.css';
+import Particles from './components/Particles';
 import logo from './logo.svg';
 
 class App extends React.Component {
 
-  componentDidMount() {
-    console.log('Hello, World');
-  }
-
   render() {
-    console.log('styles', styles);
     return (
       <div className={ styles.App }>
         <header className={ styles[ 'App-header' ] }>
@@ -23,6 +19,7 @@ class App extends React.Component {
         <div>
           <Button icon={ 'smile-o' } type={ 'primary' }>Hello</Button>
         </div>
+        <Particles/>
       </div>
     );
   }
