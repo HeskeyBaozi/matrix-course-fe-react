@@ -1,7 +1,6 @@
 import { Button } from 'antd';
 import React from 'react';
 import styles from './App.module.css';
-import Particles from './components/Particles';
 import logo from './logo.svg';
 
 class App extends React.Component {
@@ -19,7 +18,6 @@ class App extends React.Component {
         <div>
           <Button icon={ 'smile-o' } type={ 'primary' }>Hello</Button>
         </div>
-        <Particles/>
       </div>
     );
   }
