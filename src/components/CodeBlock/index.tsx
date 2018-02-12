@@ -34,7 +34,7 @@ export default class CodeBlock extends React.Component<ICodeBlockProps> {
 
   @computed
   get code() {
-    return this.props.value || '';
+    return this.props.value;
   }
 
   @action

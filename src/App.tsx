@@ -1,13 +1,13 @@
 import { Button } from 'antd';
+import { action, observable } from 'mobx';
+import { observer } from 'mobx-react';
 import React from 'react';
 import styles from './App.module.css';
+import CodeEditor from './components/CodeEditor';
 import Markdown from './components/Markdown';
 import logo from './logo.svg';
 
 const cppCode = `
-## hello
-
-\`\`\`cpp
 #include <iostream>
 using namespace std;
 
@@ -16,16 +16,30 @@ int main() {
   cout << "Hello, World" << a << endl;
   return 0;
 }
-\`\`\`
-
-> [233](http://test)
-
-$$
-E = mc^2
-$$
 `;
 
+@observer
 class App extends React.Component {
+
+  @observable
+  dataSource = [ { name: 'Hello.cpp', code: cppCode, readOnly: false } ];
+
+  @action
+  handleChange = (filename: string, code: string) => {
+    console.log('name', name, 'code', code);
+    const target = this.dataSource.find(({ name }) => name === filename);
+    if (target) {
+      target.code = code;
+    }
+  }
+
+  @action
+  handleClick = (e: any) => {
+    console.log('current', this.dataSource.slice());
+    this.dataSource = [
+      { name: 'daddy.js', code: `console.log('fuck you');`, readOnly: false }
+    ];
+  }
 
   render() {
     return (
@@ -38,9 +52,14 @@ class App extends React.Component {
           To get started, edit <code>src/App.tsx</code> and save to reload.
         </p>
         <div>
-          <Button icon={ 'smile-o' } type={ 'primary' }>Hello</Button>
+          <Button
+            icon={ 'smile-o' }
+            type={ 'primary' }
+            onClick={ this.handleClick }
+          >Hello
+          </Button>
         </div>
-        <Markdown source={ cppCode }/>
+        <CodeEditor dataSource={ this.dataSource } onChange={ this.handleChange }/>
       </div>
     );
   }
