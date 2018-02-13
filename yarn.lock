@@ -67,6 +67,21 @@
   dependencies:
     "@types/react" "*"
 
+"@types/react-router-config@^1.0.6":
+  version "1.0.6"
+  resolved "http://registry.npm.taobao.org/@types/react-router-config/download/@types/react-router-config-1.0.6.tgz#ecbb75b03a73d06c75291dd35caa881034cfeb1e"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
+"@types/react-router@*":
+  version "4.0.22"
+  resolved "http://registry.npm.taobao.org/@types/react-router/download/@types/react-router-4.0.22.tgz#2b97336eddfdf5886973539539b8ce7037cf629b"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+
 "@types/react-router@^4.0.21":
   version "4.0.21"
   resolved "http://registry.npm.taobao.org/@types/react-router/download/@types/react-router-4.0.21.tgz#d6c7ea3b45dba02eb8f869629f3b7d7b6e9a7938"
@@ -6332,6 +6347,10 @@ react-reconciler@^0.7.0:
     object-assign "^4.1.1"
     prop-types "^15.6.0"
 
+react-router-config@^1.0.0-beta.4:
+  version "1.0.0-beta.4"
+  resolved "http://registry.npm.taobao.org/react-router-config/download/react-router-config-1.0.0-beta.4.tgz#d202496dd0eabdf06cf24eb0793031f6891eef01"
+
 react-router@^4.2.0:
   version "4.2.0"
   resolved "http://registry.npm.taobao.org/react-router/download/react-router-4.2.0.tgz#61f7b3e3770daeb24062dae3eedef1b054155986"
@@ -7564,9 +7583,9 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "http://registry.npm.taobao.org/typedarray/download/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-typescript@^2.7.1:
-  version "2.7.1"
-  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.7.1.tgz#bb3682c2c791ac90e7c6210b26478a8da085c359"
+typescript@2.6.2:
+  version "2.6.2"
+  resolved "http://registry.npm.taobao.org/typescript/download/typescript-2.6.2.tgz#3c5b6fd7f6de0914269027f03c0946758f7673a4"
 
 ua-parser-js@^0.7.9:
   version "0.7.17"

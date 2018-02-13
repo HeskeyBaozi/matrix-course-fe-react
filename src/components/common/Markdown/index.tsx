@@ -4,7 +4,7 @@ import React from 'react';
 import ReactMarkdown from 'react-markdown';
 import MathJax from 'react-mathjax';
 import RemarkMathPlugin from 'remark-math';
-import CodeBlock from '../CodeBlock';
+import CodeBlock from '../CodeBlock/index';
 import styles from './index.module.less';
 
 interface IMarkdownProps {
