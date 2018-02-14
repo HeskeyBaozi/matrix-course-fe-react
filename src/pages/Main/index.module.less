@@ -1,0 +1,102 @@
+.sider {
+  height: 100vh;
+  position: fixed;
+  background-color: #232526;
+  background-image: linear-gradient(62deg, #414345 0%, #414345 100%);
+  box-shadow: 2px 0 6px rgba(0, 21, 41, .35);
+  z-index: 1001;
+}
+
+.menu {
+  :global(.ant-menu-item-selected) {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+  }
+}
+
+.logoWrapper {
+  height: 64px;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: center;
+  > img {
+    max-width: 2.5rem;
+    max-height: 2.5rem;
+  }
+}
+
+.contentLayout {
+  position: relative;
+  min-height: 100vh;
+  transition: all 200ms;
+  margin-left: 200px;
+}
+
+.contentLayoutCollapsed {
+  margin-left: 80px !important;
+}
+
+.contentHeader {
+  position: fixed;
+  padding: 0 1rem 0 0;
+  transition: all 200ms;
+  left: 200px;
+  right: 0;
+  background-color: white;
+  box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+  z-index: 2;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.contentHeaderCollapsed {
+  left: 80px;
+}
+
+.buttonLike {
+  cursor: pointer;
+  transition: all 200ms;
+  &:hover {
+    background-color: mix(white, black, 95%);
+  }
+}
+
+.trigger {
+  .buttonLike;
+  font-size: 1.3rem;
+  line-height: 64px;
+  padding: 0 2rem;
+  flex-grow: 0;
+}
+
+.innerHeader {
+  flex-grow: 1;
+  padding: 0 .5rem;
+}
+
+.content {
+  margin: calc(~'64px') 0 1rem 0;
+  padding: 1.5rem;
+}
+
+.hidden {
+  display: none;
+  opacity: 0;
+}
+
+.right {
+  display: flex;
+  flex-grow: 0;
+  flex-flow: row nowrap;
+  height: 100%;
+}
+
+.action {
+  .buttonLike;
+  padding: 0 1rem;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
+}

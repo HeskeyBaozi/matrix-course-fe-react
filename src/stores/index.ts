@@ -1,5 +1,7 @@
+import { globalStore } from './Global';
 import { loginStore } from './Login';
 
 export const stores = {
-  $Login: loginStore
+  $Login: loginStore,
+  $Global: globalStore
 };

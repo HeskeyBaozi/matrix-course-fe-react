@@ -23,9 +23,14 @@ const LoginStore = types
        * Every time query the user login status.
        */
       QueryLoginStatusAsync: flow(function* QueryLoginStatusAsync() {
+        yield new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 5000);
+        });
         const { data }: { data: ILoginQueryResult } = yield fetchUserLoginState();
         self.isLogin = data.status === 'OK';
-        return data;
+        return data as ILoginQueryResult;
       }),
 
       /**
