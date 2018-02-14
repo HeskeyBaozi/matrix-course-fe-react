@@ -4,6 +4,6 @@ import { routes as loginRoutes } from './Login/router';
 import { routes as mainRoutes } from './Main/router';
 
 export const rootRoutes: RouteConfig[] = [
-  ...mainRoutes,
-  ...loginRoutes
+  ...loginRoutes,
+  ...mainRoutes
 ];

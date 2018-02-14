@@ -1,15 +1,17 @@
 import React from 'react';
+import { Redirect } from 'react-router';
 import { RouteConfig } from 'react-router-config';
 import LoginAuthorized, { LoginStatus } from '../../components/login/LoginAuthorized';
 import { createMenu } from '../../components/menu/GeneralMenu';
 import { dynamic } from '../../utils/dynamic';
+import { routes as coursesRoutes } from './Courses/router';
+import { routes as homeRoutes } from './Home/router';
 
 const MainComponent = dynamic(() => import('./index'));
 
 export const routes: RouteConfig[] = [
   {
     path: '/',
-    exact: true,
     component: (props) => (
       <LoginAuthorized
         authority={ [ LoginStatus.User ] }
@@ -19,10 +21,11 @@ export const routes: RouteConfig[] = [
       </LoginAuthorized>
     ),
     routes: [
+      ...homeRoutes,
+      ...coursesRoutes,
       {
-        path: '/',
-        exact: true,
-        component: dynamic(() => import('./Home'))
+        path: '*',
+        component: () => <Redirect to={ { pathname: '/home' } } />
       }
     ]
   }
@@ -31,10 +34,9 @@ export const routes: RouteConfig[] = [
 export const menuRoutes: RouteConfig[] = [
   {
     path: '/',
-    strict: false,
     component: createMenu<{}>({
       dataSource: [
-        { url: '/', icon: 'home', title: '概览' },
+        { url: '/home', icon: 'home', title: '概览' },
         { url: '/courses', icon: 'book', title: '课程' },
         { url: '/notification', icon: 'bell', title: '消息' },
         { url: '/setting', icon: 'setting', title: '设置' },

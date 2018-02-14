@@ -2,6 +2,7 @@ import { Menu } from 'antd';
 import { ClickParam } from 'antd/es/menu';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
+import pathToRegexp from 'path-to-regexp';
 import React from 'react';
 import { RouteConfigComponentProps } from 'react-router-config';
 import { IGlobalStore } from '../../../stores/Global';
@@ -31,7 +32,7 @@ export default class GeneralMenu<P> extends React.Component<IGeneralMenuProps<P>
     const { returnTo } = this.props;
     return returnTo ? (
       <Item className={ styles.returnItem } key={ 'RETURN' }>
-        <IconText icon={ 'rollback' } title={ '返回上一级' }/>
+        <IconText icon={ 'rollback' } title={ '返回上一级' } />
       </Item>
     ) : null;
   }
@@ -41,18 +42,26 @@ export default class GeneralMenu<P> extends React.Component<IGeneralMenuProps<P>
     const { dataSource } = this.props;
     return dataSource.map(({ url, icon, title }) => (
       <Item key={ url }>
-        <IconText icon={ icon } title={ title }/>
+        <IconText icon={ icon } title={ title } />
       </Item>
     ));
   }
 
   @computed
+  get dataSourceWithRegExp() {
+    const { dataSource } = this.props;
+    return dataSource.map(({ url }) => ({ url, reg: pathToRegexp(url) }));
+  }
+
+  @computed
   get selectedKeys() {
-    const { dataSource, match } = this.props;
-    return dataSource.map(({ url }) => url).filter((url) => {
-      // fixme: should use match ?
-      return url === match.url;
-    });
+    const { location } = this.props;
+    return this.dataSourceWithRegExp
+      /**
+       * convert url(path) into regexp and test it to get current selected keys...
+       */
+      .filter(({ reg }) => reg.test(location.pathname))
+      .map(({ url }) => url);
   }
 
   navigate = ({ key: url }: ClickParam) => {
