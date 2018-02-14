@@ -4,7 +4,9 @@ import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config';
 import logoTransUrl from '../../assets/images/logo-trans.png';
+import Loading from '../../components/common/Loading';
 import { IGlobalStore } from '../../stores/Global';
+import { IProfileStore } from '../../stores/Profile';
 import styles from './index.module.less';
 import { menuRoutes } from './router';
 
@@ -12,14 +14,22 @@ const { Header, Sider, Content } = Layout;
 
 interface IMainProps extends RouteConfigComponentProps<{}> {
   $Global?: IGlobalStore;
+  $Profile?: IProfileStore;
 }
 
-@inject('$Global')
+@inject('$Global', '$Profile')
 @observer
 export default class Main extends React.Component<IMainProps> {
 
   handleToggle = () => {
     this.props.$Global!.toggle();
+  }
+
+  async componentDidMount() {
+    const { $Profile } = this.props;
+    await Promise.all([
+      $Profile!.LoadProfileAsync()
+    ]);
   }
 
   @computed
@@ -62,8 +72,16 @@ export default class Main extends React.Component<IMainProps> {
   }
 
   @computed
+  get headerAvatarUrl() {
+    const { $Profile } = this.props;
+    if ($Profile!.profile !== null) {
+      return `/api/users/profile/avatar?username=${$Profile!.profile!.username}`;
+    }
+  }
+
+  @computed
   get Header() {
-    const { $Global } = this.props;
+    const { $Global, $Profile } = this.props;
     return (
       <Header className={ this.contentHeaderClassNames }>
         <Icon
@@ -79,7 +97,8 @@ export default class Main extends React.Component<IMainProps> {
             <Icon type={ 'bell' }/>
           </span>
           <span className={ styles.action }>
-            <Avatar size={ 'large' } icon={ 'user' } src={ 'none' }/>
+            <Loading loading={ !$Profile!.profile || $Profile!.$loading.get('LoadProfileAsync') }/>
+            <Avatar size={ 'large' } icon={ 'user' } src={ this.headerAvatarUrl }/>
           </span>
         </div>
       </Header>

@@ -23,11 +23,6 @@ const LoginStore = types
        * Every time query the user login status.
        */
       QueryLoginStatusAsync: flow(function* QueryLoginStatusAsync() {
-        yield new Promise((resolve) => {
-          setTimeout(() => {
-            resolve();
-          }, 5000);
-        });
         const { data }: { data: ILoginQueryResult } = yield fetchUserLoginState();
         self.isLogin = data.status === 'OK';
         return data as ILoginQueryResult;
@@ -79,8 +74,3 @@ export interface ILoginStore extends ILoginStoreType {
 }
 
 export const loginStore: ILoginStore = LoginStore.create();
-
-onSnapshot(loginStore, (snapshot) => {
-  console.log('snapshot');
-  console.dir(snapshot);
-});
