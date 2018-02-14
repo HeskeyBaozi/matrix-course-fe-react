@@ -151,7 +151,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
 
   componentDidMount() {
     const { $Login } = this.props;
-    this.disposer = autorunAsync(() => {
+    this.disposer = autorunAsync('ReFetch avatar when username changes...', () => {
       if (this.username.length > 5) {
         $Login!.LoadAvatarAsync(this.username);
       }
