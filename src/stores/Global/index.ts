@@ -19,6 +19,9 @@ const GlobalStore = GlobalState
       },
       setHeaderText(value: string) {
         self.headerText = value;
+      },
+      resetHeaderText() {
+        self.headerText = '';
       }
     };
   });

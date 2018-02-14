@@ -44,7 +44,7 @@ export default class Main extends React.Component<IMainProps> {
         className={ styles.sider }
       >
         <div className={ styles.logoWrapper }>
-          <img src={ logoTransUrl } alt={ 'logo' }/>
+          <img src={ logoTransUrl } alt={ 'logo' } />
         </div>
         { renderRoutes(menuRoutes) }
       </Sider>
@@ -72,14 +72,6 @@ export default class Main extends React.Component<IMainProps> {
   }
 
   @computed
-  get headerAvatarUrl() {
-    const { $Profile } = this.props;
-    if ($Profile!.profile !== null) {
-      return `/api/users/profile/avatar?username=${$Profile!.profile!.username}`;
-    }
-  }
-
-  @computed
   get Header() {
     const { $Global, $Profile } = this.props;
     return (
@@ -94,11 +86,11 @@ export default class Main extends React.Component<IMainProps> {
         </div>
         <div className={ styles.right }>
           <span className={ styles.action }>
-            <Icon type={ 'bell' }/>
+            <Icon type={ 'bell' } />
           </span>
           <span className={ styles.action }>
-            <Loading loading={ !$Profile!.profile || $Profile!.$loading.get('LoadProfileAsync') }/>
-            <Avatar size={ 'large' } icon={ 'user' } src={ this.headerAvatarUrl }/>
+            <Loading loading={ !$Profile!.profile || $Profile!.$loading.get('LoadProfileAsync') } />
+            <Avatar size={ 'large' } icon={ 'user' } src={ $Profile!.avatarUrl } />
           </span>
         </div>
       </Header>

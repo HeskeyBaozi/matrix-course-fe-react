@@ -15,9 +15,16 @@ export const routes: RouteConfig[] = [
         authority={ [ LoginStatus.User ] }
         redirectPath={ '/login' }
       >
-        <MainComponent { ...props }/>
+        <MainComponent { ...props } />
       </LoginAuthorized>
-    )
+    ),
+    routes: [
+      {
+        path: '/',
+        exact: true,
+        component: dynamic(() => import('./Home'))
+      }
+    ]
   }
 ];
 
