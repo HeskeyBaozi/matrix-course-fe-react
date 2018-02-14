@@ -44,7 +44,6 @@ class PageHeader extends React.Component<IPageHeaderProps> {
   @computed
   get PageBreadcrumb() {
     const { globalRoutes, location, history } = this.props;
-    console.log(matchRoutes(globalRoutes || [], location.pathname));
     return globalRoutes && location && history ? (
       <Breadcrumb className={ styles.breadcrumb }>
         { this.BreadcrumbMap }

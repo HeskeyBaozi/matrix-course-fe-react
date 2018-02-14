@@ -3,9 +3,5 @@ import { IRouteConfigWithBreadcrumb } from '../../../components/common/PageHeade
 import { dynamic } from '../../../utils/dynamic';
 
 export const routes: IRouteConfigWithBreadcrumb[] = [
-  {
-    path: '/courses',
-    component: dynamic(() => import('./index')),
-    breadcrumbName: '课程'
-  }
+
 ];
