@@ -18,7 +18,6 @@
     "object-literal-sort-keys": false,
     "no-implicit-dependencies": false,
     "no-empty-interface": false,
-    "space-before-function-paren": false,
     "trailing-comma": [
       true,
       {

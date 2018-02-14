@@ -58,5 +58,14 @@
     "tslint-react": "^3.4.0",
     "typescript": "2.6.2",
     "webpack": "^3.11.0"
+  },
+  "proxy": {
+    "/api/*": {
+      "target": "http://test.vmatrix.org.cn",
+      "secure": false,
+      "changeOrigin": true,
+      "cookieDomainRewrite": "",
+      "ws": true
+    }
   }
 }
