@@ -90,7 +90,7 @@ export default class Main extends React.Component<IMainProps> {
           onClick={ this.handleToggle }
         />
         <div className={ styles.innerHeader }>
-          <span>Hello, World</span>
+          <span>{ $Global!.headerText }</span>
         </div>
         <div className={ styles.right }>
           <span className={ styles.action }>

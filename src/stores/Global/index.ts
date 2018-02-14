@@ -2,7 +2,8 @@ import { types } from 'mobx-state-tree';
 
 const GlobalState = types
   .model('Global', {
-    collapsed: true
+    collapsed: true,
+    headerText: 'Hello, Matrix!!!'
   });
 
 type IGlobalStateType = typeof GlobalState.Type;
@@ -15,6 +16,9 @@ const GlobalStore = GlobalState
     return {
       toggle() {
         self.collapsed = !self.collapsed;
+      },
+      setHeaderText(value: string) {
+        self.headerText = value;
       }
     };
   });
