@@ -5,7 +5,7 @@ import React from 'react';
 
 interface IIconTextProps {
   hasContainer?: boolean;
-  icon: string;
+  icon?: string;
   title: React.ReactNode;
   gutter?: number;
 }
@@ -16,10 +16,13 @@ export default class IconText extends React.Component<IIconTextProps> {
   @computed
   get Content() {
     const { icon, title, gutter } = this.props;
-    return [
-      <Icon key={ 'icon' } type={ icon }/>,
-      <span key={ 'title' } style={ gutter ? { marginLeft: `${gutter}rem` } : void 0 }>{ title }</span>
-    ];
+    const text = (
+      <span key={ 'title' }>{ title }</span>
+    );
+    return icon ? [
+      <Icon key={ 'icon' } type={ icon } style={ gutter ? { marginRight: `${gutter}rem` } : void 0 } />,
+      text
+    ] : [ text ];
   }
 
   render() {
