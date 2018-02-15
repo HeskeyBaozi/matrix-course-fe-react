@@ -6,6 +6,7 @@ import { RouteConfigComponentProps } from 'react-router-config';
 import { Link } from 'react-router-dom';
 import Loading from '../../../../components/common/Loading';
 import { ICourseItem, ICoursesStore } from '../../../../stores/Courses';
+import CourseCard from './CourseCard';
 
 interface ICoursesListParams {
   status: string;
@@ -49,7 +50,6 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
 
   handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { history } = this.props;
-    console.log(history);
     history.push(`/courses/${e.target.value}`);
   }
 
@@ -102,10 +102,10 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
     );
   }
 
-  renderItem = ({ course_id }: ICourseItem) => (
+  renderItem = (item: ICourseItem) => (
     <List.Item>
-      <Link to={ `/course/${course_id}` }>
-        { course_id }
+      <Link to={ `/course/${item.course_id}` }>
+        <CourseCard item={ item } />
       </Link>
     </List.Item>
   )

@@ -1,0 +1,19 @@
+
+.titleWrapper {
+  display: flex;
+
+  flex-flow: row nowrap;
+  justify-content: space-between;
+   > * {
+    display: flex;
+
+    align-items: center;
+    flex-flow: row nowrap;
+     > * {
+      margin-right: 1rem;
+      &:last-child {
+        margin-right: 0rem;
+      }
+    }
+  }
+}
