@@ -65,7 +65,11 @@ export default class CourseCard extends React.Component<ICourseCradProps> {
 
   render() {
     return (
-      <Card hoverable={ true } title={ this.Title } bodyStyle={ { height: '12rem' } }>
+      <Card
+        hoverable={ true }
+        title={ this.Title }
+        bodyStyle={ { height: '12rem' } }
+      >
         <Descriptions
           style={ { marginBottom: '1.5rem' } }
           layout={ 'vertical' }

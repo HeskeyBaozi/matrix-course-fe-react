@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import Loading from '../../../../components/common/Loading';
 import { ICourseItem, ICoursesStore } from '../../../../stores/Courses';
 import CourseCard from './CourseCard';
+import styles from './index.module.less';
 
 interface ICoursesListParams {
   status: string;
@@ -79,7 +80,7 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
           style={ { maxWidth: '24rem' } }
           value={ this.searchValue }
           placeholder={ '按课程名称或教师搜索' }
-          prefix={ <Icon type={ 'search' } /> }
+          prefix={ <Icon type={ 'search' } style={ { zIndex: -1 } } /> }
           onChange={ this.handleSearchValueChange }
         />
       </Card>
@@ -103,7 +104,7 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
   }
 
   renderItem = (item: ICourseItem) => (
-    <List.Item>
+    <List.Item className={ styles.listItem }>
       <Link to={ `/course/${item.course_id}` }>
         <CourseCard item={ item } />
       </Link>
