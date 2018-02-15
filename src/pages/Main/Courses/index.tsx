@@ -2,6 +2,7 @@ import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config';
 import PageContainer from '../../../components/common/PageHeader/pageContainer';
+import withHeaderRoom from '../../../components/header/HeaderRoom/decorator';
 import { IGlobalStore } from '../../../stores/Global';
 import { rootRoutes } from '../../router';
 
@@ -10,16 +11,9 @@ interface ICoursesProps extends RouteConfigComponentProps<{}> {
 }
 
 @inject('$Global')
+@withHeaderRoom<ICoursesProps>(() => '所有课程')
 @observer
 export default class Courses extends React.Component<ICoursesProps> {
-
-  componentDidMount() {
-    this.props.$Global!.setHeaderText('所有课程');
-  }
-
-  componentWillUnmount() {
-    this.props.$Global!.resetHeaderText();
-  }
 
   render() {
     const { route } = this.props;
