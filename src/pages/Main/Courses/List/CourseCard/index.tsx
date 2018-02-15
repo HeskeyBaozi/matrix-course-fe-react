@@ -68,7 +68,7 @@ export default class CourseCard extends React.Component<ICourseCradProps> {
       <Card
         hoverable={ true }
         title={ this.Title }
-        bodyStyle={ { height: '12rem' } }
+        className={ styles.cardBody }
       >
         <Descriptions
           style={ { marginBottom: '1.5rem' } }
