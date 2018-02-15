@@ -25,6 +25,20 @@ export interface ICourseItem extends CourseItemType { }
 const CoursesState = types
   .model({
     courses: types.maybe(types.array(CourseItem))
+  })
+  .views((self) => {
+    return {
+      get openList() {
+        if (self.courses) {
+          return self.courses.filter(({status}) => status === 'open');
+        }
+      },
+      get closeList() {
+        if (self.courses) {
+          return self.courses.filter(({status}) => status === 'close');
+        }
+      }
+    };
   });
 
 type CoursesStateType = typeof CoursesState.Type;

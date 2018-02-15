@@ -33,7 +33,7 @@ export const menuRoutes: RouteConfig[] = [
     component: createMenu<{}>({
       dataSource: [
         { url: '/home', icon: 'home', title: '概览' },
-        { url: '/courses', icon: 'book', title: '课程' },
+        { url: '/courses', path: '/courses/:status', icon: 'book', title: '课程' },
         { url: '/notification', icon: 'bell', title: '消息' },
         { url: '/setting', icon: 'setting', title: '设置' },
         { url: '/feedback', icon: 'smile-o', title: '反馈' }

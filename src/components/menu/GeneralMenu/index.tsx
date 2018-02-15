@@ -12,6 +12,7 @@ import styles from './index.module.less';
 const { Item } = Menu;
 
 export interface IGeneralMenuItem {
+  path?: string;
   url: string;
   icon: string;
   title: React.ReactNode;
@@ -50,7 +51,7 @@ export default class GeneralMenu<P> extends React.Component<IGeneralMenuProps<P>
   @computed
   get dataSourceWithRegExp() {
     const { dataSource } = this.props;
-    return dataSource.map(({ url }) => ({ url, reg: pathToRegexp(url) }));
+    return dataSource.map(({ url, path }) => ({ url, reg: pathToRegexp(path || url) }));
   }
 
   @computed
