@@ -5,6 +5,7 @@ import React from 'react';
 import HeadRoom from 'react-headroom';
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config';
 import logoTransUrl from '../../assets/images/logo-trans.png';
+import logoUrl from '../../assets/images/logo.svg';
 import Loading from '../../components/common/Loading';
 import HeaderRoom from '../../components/header/HeaderRoom';
 import { ICoursesStore } from '../../stores/Courses';
@@ -92,7 +93,7 @@ export default class Main extends React.Component<IMainProps> {
           onClick={ this.handleToggle }
         />
         <HeaderRoom>
-          Hello, World!
+          <span>The Art of Coding</span>
         </HeaderRoom>
         <div className={ styles.right }>
           <span className={ styles.action }>

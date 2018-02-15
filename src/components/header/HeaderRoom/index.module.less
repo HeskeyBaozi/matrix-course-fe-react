@@ -1,9 +1,10 @@
 @import '~antd/lib/style/themes/default.less';
-
 .AppHeader {
   position: relative;
 
   overflow: hidden;
+
+  padding: 0 .5rem;
 
   flex-grow: 1;
   :global {
@@ -12,6 +13,8 @@
       top: 0;
 
       transition: transform .3s ease-in-out;
+
+      .text;
     }
     .headroom--unfixed {
       position: relative;
@@ -38,6 +41,8 @@
   position: absolute;
   z-index: 1;
   top: 0;
+
+  overflow: hidden;
 
   transition: transform .3s ease-in-out;
   &:not(.isShown) {
