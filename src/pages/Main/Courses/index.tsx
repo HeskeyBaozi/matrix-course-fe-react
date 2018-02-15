@@ -17,11 +17,8 @@ export default class Courses extends React.Component<ICoursesProps> {
 
   render() {
     const { route } = this.props;
-    const extra = (
-      <div style={ { height: '500px', backgroundColor: 'lightblue' } }>test</div>
-    );
     return (
-      <PageContainer title={ '所有课程' } globalRoutes={ rootRoutes } extra={ extra }>
+      <PageContainer title={ '所有课程' } globalRoutes={ rootRoutes }>
         { renderRoutes(route!.routes) }
       </PageContainer>
     );

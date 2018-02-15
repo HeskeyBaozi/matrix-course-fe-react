@@ -24,9 +24,30 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
   @observable
   searchValue = '';
 
+  @observable
+  currentPage = 1;
+
   @action
   handleSearchValueChange = (e: SyntheticEvent<HTMLInputElement>) => {
     this.searchValue = e.currentTarget.value;
+    this.currentPage = 1;
+  }
+
+  @action
+  handlePaginationChange = (next: number) => {
+    this.currentPage = next;
+  }
+
+  @computed
+  get pagination() {
+    return {
+      showQuickJumper: true,
+      current: this.currentPage,
+      pageSize: 12,
+      size: 'small',
+      total: this.searchDataSource && this.searchDataSource.length || 0,
+      onChange: this.handlePaginationChange
+    };
   }
 
   @computed
@@ -41,17 +62,30 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
   }
 
   @computed
-  get dataSource() {
+  get searchDataSource() {
     if (this.baseDataSource) {
-      return this.baseDataSource.filter(({ course_name, teacher }) => {
-        return course_name.includes(this.searchValue) || teacher.includes(this.searchValue);
-      });
+      return this.baseDataSource
+        .filter(({ course_name, teacher }) => {
+          return course_name.includes(this.searchValue) || teacher.includes(this.searchValue);
+        });
     }
   }
 
+  @computed
+  get pagedDataSource() {
+    if (this.searchDataSource) {
+      const { pageSize, total } = this.pagination;
+      const offset = (this.currentPage - 1) * pageSize;
+      return this.searchDataSource
+        .slice(offset, offset + pageSize >= total ? total : offset + pageSize);
+    }
+  }
+
+  @action
   handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { history } = this.props;
     history.push(`/courses/${e.target.value}`);
+    this.currentPage = 1;
   }
 
   @computed
@@ -94,9 +128,9 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
       <div key={ 'list' } style={ { position: 'relative' } }>
         <Loading loading={ !$Courses!.courses || $Courses!.$loading.get('LoadCoursesAsync') } />
         <List
-          pagination={ false }
+          pagination={ this.pagination }
           grid={ { gutter: 16, xl: 3, lg: 2, md: 1, sm: 1, xs: 1 } }
-          dataSource={ this.dataSource }
+          dataSource={ this.pagedDataSource }
           renderItem={ this.renderItem }
         />
       </div>
