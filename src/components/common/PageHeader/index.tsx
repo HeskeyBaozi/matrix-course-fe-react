@@ -2,9 +2,10 @@ import { Breadcrumb, Tabs } from 'antd';
 import { Location } from 'history';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react';
-import React, { SyntheticEvent } from 'react';
+import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { matchRoutes, RouteConfig } from 'react-router-config';
+import { Link } from 'react-router-dom';
 import IconText from '../IconText';
 import styles from './index.module.less';
 import { IRouteConfigWithBreadcrumb } from './interfaces';
@@ -33,14 +34,6 @@ class PageHeader extends React.Component<IPageHeaderProps> {
     }
   }
 
-  handleBreadcrumbClick = (e: SyntheticEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const { globalRoutes, location, history } = this.props;
-    if (globalRoutes && location && history) {
-      history.push(e.currentTarget.href);
-    }
-  }
-
   @computed
   get PageBreadcrumb() {
     const { globalRoutes, location, history } = this.props;
@@ -63,9 +56,9 @@ class PageHeader extends React.Component<IPageHeaderProps> {
           const content = isLast ? (
             <IconText icon={ icon } title={ breadcrumbName } gutter={ .5 } />
           ) : (
-              <a href={ match.url } onClick={ this.handleBreadcrumbClick }>
+              <Link to={ match.url }>
                 <IconText icon={ icon } title={ breadcrumbName } gutter={ .5 } />
-              </a>
+              </Link>
             );
           return (
             <Breadcrumb.Item key={ match.url }>

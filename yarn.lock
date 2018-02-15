@@ -75,6 +75,14 @@
     "@types/react" "*"
     "@types/react-router" "*"
 
+"@types/react-router-dom@^4.2.4":
+  version "4.2.4"
+  resolved "http://registry.npm.taobao.org/@types/react-router-dom/download/@types/react-router-dom-4.2.4.tgz#02c43274129ffe0ac42b348f7c8c4a9a4e127c8a"
+  dependencies:
+    "@types/history" "*"
+    "@types/react" "*"
+    "@types/react-router" "*"
+
 "@types/react-router@*":
   version "4.0.22"
   resolved "http://registry.npm.taobao.org/@types/react-router/download/@types/react-router-4.0.22.tgz#2b97336eddfdf5886973539539b8ce7037cf629b"
@@ -6354,6 +6362,17 @@ react-reconciler@^0.7.0:
 react-router-config@^1.0.0-beta.4:
   version "1.0.0-beta.4"
   resolved "http://registry.npm.taobao.org/react-router-config/download/react-router-config-1.0.0-beta.4.tgz#d202496dd0eabdf06cf24eb0793031f6891eef01"
+
+react-router-dom@^4.2.2:
+  version "4.2.2"
+  resolved "http://registry.npm.taobao.org/react-router-dom/download/react-router-dom-4.2.2.tgz#c8a81df3adc58bba8a76782e946cbd4eae649b8d"
+  dependencies:
+    history "^4.7.2"
+    invariant "^2.2.2"
+    loose-envify "^1.3.1"
+    prop-types "^15.5.4"
+    react-router "^4.2.0"
+    warning "^3.0.0"
 
 react-router@^4.2.0:
   version "4.2.0"

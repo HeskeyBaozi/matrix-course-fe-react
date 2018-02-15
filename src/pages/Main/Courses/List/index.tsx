@@ -3,6 +3,7 @@ import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
 import { RouteConfigComponentProps } from 'react-router-config';
+import { Link } from 'react-router-dom';
 import Loading from '../../../../components/common/Loading';
 import { ICourseItem, ICoursesStore } from '../../../../stores/Courses';
 
@@ -48,6 +49,7 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
 
   handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { history } = this.props;
+    console.log(history);
     history.push(`/courses/${e.target.value}`);
   }
 
@@ -100,17 +102,11 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
     );
   }
 
-  handleLinkClick = (e: SyntheticEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    const { history } = this.props;
-    history.push(e.currentTarget.href);
-  }
-
   renderItem = ({ course_id }: ICourseItem) => (
     <List.Item>
-      <a href={ `/course/${course_id}` } onClick={ this.handleLinkClick }>
+      <Link to={ `/course/${course_id}` }>
         { course_id }
-      </a>
+      </Link>
     </List.Item>
   )
 
