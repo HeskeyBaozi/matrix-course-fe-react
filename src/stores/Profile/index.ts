@@ -2,15 +2,15 @@ import { flow, onSnapshot, types } from 'mobx-state-tree';
 import { IDescriptionItem } from '../../components/common/Descriptions';
 import { LoadingStore } from '../Loading';
 import { fetchProfile } from './services';
+import { UserState } from './user';
 
-const OneProfileState = types.model({
-  email: types.maybe(types.string),
-  homepage: types.maybe(types.string),
-  nickname: types.string,
-  phone: types.maybe(types.string),
-  realname: types.string,
-  username: types.string
-});
+const OneProfileState = types
+.compose(
+  types.model({
+    nickname: types.string
+  }),
+  UserState
+);
 
 const ProfileState = types
   .model({
@@ -60,8 +60,3 @@ export interface IProfileStore extends IProfileStoreType {
 }
 
 export const profileStore: IProfileStore = ProfileStore.create();
-
-onSnapshot(profileStore, (snapshot) => {
-  console.log('snapshot');
-  console.dir(snapshot);
-});

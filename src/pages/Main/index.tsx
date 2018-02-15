@@ -5,6 +5,7 @@ import React from 'react';
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config';
 import logoTransUrl from '../../assets/images/logo-trans.png';
 import Loading from '../../components/common/Loading';
+import { ICoursesStore } from '../../stores/Courses';
 import { IGlobalStore } from '../../stores/Global';
 import { IProfileStore } from '../../stores/Profile';
 import styles from './index.module.less';
@@ -15,21 +16,28 @@ const { Header, Sider, Content } = Layout;
 interface IMainProps extends RouteConfigComponentProps<{}> {
   $Global?: IGlobalStore;
   $Profile?: IProfileStore;
+  $Courses?: ICoursesStore;
 }
 
-@inject('$Global', '$Profile')
+@inject('$Global', '$Profile', '$Courses')
 @observer
 export default class Main extends React.Component<IMainProps> {
 
-  handleToggle = () => {
-    this.props.$Global!.toggle();
+  /**
+   * When enter the Main layout,
+   * Load the basic information including
+   * profile, courses...
+   */
+  async componentDidMount() {
+    const { $Profile, $Courses } = this.props;
+    await Promise.all([
+      $Profile!.LoadProfileAsync(),
+      $Courses!.LoadCoursesAsync()
+    ]);
   }
 
-  async componentDidMount() {
-    const { $Profile } = this.props;
-    await Promise.all([
-      $Profile!.LoadProfileAsync()
-    ]);
+  handleToggle = () => {
+    this.props.$Global!.toggle();
   }
 
   @computed

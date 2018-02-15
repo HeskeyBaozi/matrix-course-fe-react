@@ -1,4 +1,4 @@
-interface IUser {
+export interface IUser {
   email: string | null;
   homepage: string | null;
   phone: string | null;
