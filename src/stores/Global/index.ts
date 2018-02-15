@@ -3,7 +3,15 @@ import { types } from 'mobx-state-tree';
 const GlobalState = types
   .model('Global', {
     collapsed: true,
-    headerText: 'Hello, Matrix!!!'
+    headerText: 'Hello, Matrix!!!',
+    pageHeaderHeight: Infinity
+  })
+  .views((self) => {
+    return {
+      get pinStart() {
+        return Math.max(self.pageHeaderHeight - 64, 64);
+      }
+    };
   });
 
 type IGlobalStateType = typeof GlobalState.Type;
@@ -22,6 +30,12 @@ const GlobalStore = GlobalState
       },
       resetHeaderText() {
         self.headerText = '';
+      },
+      setPageHeaderHeight(value: number) {
+        self.pageHeaderHeight = value;
+      },
+      resetPageHeaderHeight() {
+        self.pageHeaderHeight = Infinity;
       }
     };
   });

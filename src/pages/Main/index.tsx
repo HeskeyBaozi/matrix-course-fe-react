@@ -2,9 +2,11 @@ import { Avatar, Icon, Layout } from 'antd';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
+import HeadRoom from 'react-headroom';
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config';
 import logoTransUrl from '../../assets/images/logo-trans.png';
 import Loading from '../../components/common/Loading';
+import HeaderRoom from '../../components/header/HeaderRoom';
 import { ICoursesStore } from '../../stores/Courses';
 import { IGlobalStore } from '../../stores/Global';
 import { IProfileStore } from '../../stores/Profile';
@@ -89,9 +91,9 @@ export default class Main extends React.Component<IMainProps> {
           type={ $Global!.collapsed ? 'menu-unfold' : 'menu-fold' }
           onClick={ this.handleToggle }
         />
-        <div className={ styles.innerHeader }>
-          <span>{ $Global!.headerText }</span>
-        </div>
+        <HeaderRoom>
+          Hello, World!
+        </HeaderRoom>
         <div className={ styles.right }>
           <span className={ styles.action }>
             <Icon type={ 'bell' } />

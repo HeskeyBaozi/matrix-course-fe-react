@@ -1,11 +1,12 @@
 import { Breadcrumb, Tabs } from 'antd';
 import { Location } from 'history';
 import { computed } from 'mobx';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
 import { matchRoutes, RouteConfig } from 'react-router-config';
 import { Link } from 'react-router-dom';
+import { IGlobalStore } from '../../../stores/Global';
 import IconText from '../IconText';
 import styles from './index.module.less';
 import { IRouteConfigWithBreadcrumb } from './interfaces';
@@ -13,6 +14,7 @@ import { IRouteConfigWithBreadcrumb } from './interfaces';
 const { TabPane } = Tabs;
 
 interface IPageHeaderProps extends RouteComponentProps<any> {
+  $Global?: IGlobalStore;
   globalRoutes?: RouteConfig[];
   logo?: React.ReactNode;
   title?: React.ReactNode;
@@ -24,13 +26,27 @@ interface IPageHeaderProps extends RouteComponentProps<any> {
   style?: React.CSSProperties;
 }
 
+@inject('$Global')
 @observer
 class PageHeader extends React.Component<IPageHeaderProps> {
+
+  headDiv: HTMLDivElement;
+
+  handleHeadDivRef = (div: HTMLDivElement) => {
+    this.headDiv = div;
+  }
 
   handleTabChange = (key: string) => {
     const { onTabChange } = this.props;
     if (onTabChange) {
       onTabChange(key);
+    }
+  }
+
+  componentDidMount() {
+    const { $Global } = this.props;
+    if (this.headDiv) {
+      $Global!.setPageHeaderHeight(this.headDiv.offsetHeight);
     }
   }
 
@@ -94,7 +110,7 @@ class PageHeader extends React.Component<IPageHeaderProps> {
   render() {
     const { logo, title, action, children, extraContent, style } = this.props;
     return (
-      <div className={ styles.pageHeader } style={ style }>
+      <div className={ styles.pageHeader } style={ style } ref={ this.handleHeadDivRef }>
         { this.PageBreadcrumb }
         <div className={ styles.detail }>
           { logo && <div className={ styles.logo }>{ logo }</div> }

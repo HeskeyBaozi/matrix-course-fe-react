@@ -1,0 +1,52 @@
+@import '~antd/lib/style/themes/default.less';
+
+.AppHeader {
+  position: relative;
+
+  overflow: hidden;
+
+  flex-grow: 1;
+  :global {
+    .headroom {
+      z-index: 1;
+      top: 0;
+
+      transition: transform .3s ease-in-out;
+    }
+    .headroom--unfixed {
+      position: relative;
+
+      transform: translateY(0);
+    }
+    .headroom--scrolled {
+      transition: transform .3s ease-in-out;
+    }
+    .headroom--unpinned {
+      position: fixed;
+
+      transform: translateY(-100%);
+    }
+    .headroom--pinned {
+      position: fixed;
+
+      transform: translateY(0%);
+    }
+  }
+}
+
+.PageHeader {
+  position: absolute;
+  z-index: 1;
+  top: 0;
+
+  transition: transform .3s ease-in-out;
+  &:not(.isShown) {
+    transform: translateY(100%);
+  }
+}
+
+.text {
+  color: @card-head-color;
+
+  font-size: 1.3rem;
+}

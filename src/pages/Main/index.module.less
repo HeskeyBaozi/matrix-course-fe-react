@@ -17,11 +17,12 @@
 
 .logoWrapper {
   display: flex;
+
+  height: 64px;
+
   align-items: center;
   flex-flow: row nowrap;
   justify-content: center;
-
-  height: 64px;
    > img {
     max-width: 2.5rem;
     max-height: 2.5rem;
@@ -43,14 +44,11 @@
 
 .contentHeader {
   position: fixed;
-  z-index: 2;
+  z-index: 200;
   right: 0;
   left: 200px;
 
   display: flex;
-  align-items: center;
-  flex-flow: row nowrap;
-  justify-content: space-between;
 
   padding: 0 1rem 0 0;
 
@@ -58,6 +56,10 @@
 
   background-color: white;
   box-shadow: 0 1px 4px rgba(0, 21, 41, .08);
+
+  align-items: center;
+  flex-flow: row nowrap;
+  justify-content: space-between;
 }
 
 .contentHeaderCollapsed {
@@ -75,22 +77,29 @@
 }
 
 .trigger {
-  flex-grow: 0;
-
   padding: 0 2rem;
 
   font-size: 1.3rem;
   line-height: 64px;
 
   .buttonLike;
+  flex-grow: 0;
 }
 
 .innerHeader {
-  flex-grow: 1;
+  position: relative;
 
   padding: 0 .5rem;
 
   font-size: 1.3rem;
+
+  flex-grow: 1;
+  :global {
+    .headroom {
+      right: unset !important;
+      left: unset !important;
+    }
+  }
 }
 
 .content {
@@ -106,18 +115,19 @@
 
 .right {
   display: flex;
-  flex-flow: row nowrap;
-  flex-grow: 0;
 
   height: 100%;
+
+  flex-flow: row nowrap;
+  flex-grow: 0;
 }
 
 .action {
   display: flex;
-  align-items: center;
-  flex-flow: row nowrap;
 
   padding: 0 1rem;
 
+  align-items: center;
   .buttonLike;
+  flex-flow: row nowrap;
 }

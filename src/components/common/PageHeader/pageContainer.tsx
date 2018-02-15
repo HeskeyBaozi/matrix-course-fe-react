@@ -17,6 +17,7 @@ interface IPageContainerProps {
   onTabChange?: (key: string) => void;
   tabActiveKey?: string;
   col?: number;
+  extra?: React.ReactNode;
   globalRoutes?: RouteConfig[];
   dataSource?: IDescriptionItem[];
   title: string;
@@ -48,7 +49,7 @@ export default class PageContainer extends React.Component<IPageContainerProps> 
   }
 
   render() {
-    const { logo, tabList, onTabChange, tabActiveKey, children, globalRoutes } = this.props;
+    const { logo, tabList, onTabChange, tabActiveKey, children, globalRoutes, extra } = this.props;
     return (
       <div style={ { margin: '-1.5rem' } }>
         <PageHeader
@@ -59,6 +60,7 @@ export default class PageContainer extends React.Component<IPageContainerProps> 
           tabActiveKey={ tabActiveKey }
           onTabChange={ onTabChange }
           globalRoutes={ globalRoutes }
+          extraContent={ extra }
         >
           { this.DescriptionList }
         </PageHeader>
