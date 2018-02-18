@@ -10,5 +10,6 @@
   "csscomb.formatOnSave": true,
   "csscomb.preset": "./.csscomb.json",
   "tslint.autoFixOnSave": true,
-  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true,
+  "typescript.tsdk": "node_modules\\typescript\\lib"
 }
