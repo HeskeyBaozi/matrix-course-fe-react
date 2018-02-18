@@ -22,6 +22,7 @@ const DiscussionSenderState = types
 
 const DiscussionState = types
   .model({
+    id: types.identifier(types.number),
     time: types.string,
     status: types.number,
     type: types.literal('discussion'),
@@ -70,6 +71,7 @@ const CourseSenderState = types
 
 const CourseState = types
   .model({
+    id: types.identifier(types.number),
     time: types.string,
     status: types.number,
     type: types.literal('course'),
@@ -114,6 +116,7 @@ const HomeworkSenderState = types
 
 const HomeworkState = types
   .model({
+    id: types.identifier(types.number),
     time: types.string,
     status: types.number,
     type: types.literal('homework'),
@@ -166,6 +169,7 @@ const LibrarySenderState = types
 
 const LibraryState = types
   .model({
+    id: types.identifier(types.number),
     time: types.string,
     status: types.number,
     type: types.literal('library'),
@@ -197,6 +201,7 @@ const SystemSenderState = types.string;
 
 const SystemState = types
   .model({
+    id: types.identifier(types.number),
     time: types.string,
     status: types.number,
     type: types.literal('system'),

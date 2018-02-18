@@ -1,7 +1,6 @@
 import { notification } from 'antd';
 import { action, computed, observable } from 'mobx';
 import { observer, Provider } from 'mobx-react';
-import DevTools from 'mobx-react-devtools';
 import React from 'react';
 import { Router } from 'react-router';
 import { renderRoutes } from 'react-router-config';

@@ -2,7 +2,7 @@ import { Badge } from 'antd';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
-import { RouteConfig, RouteConfigComponentProps } from 'react-router-config';
+import { RouteConfig } from 'react-router-config';
 import { IGlobalStore } from '../../../stores/Global';
 import Descriptions, { IDescriptionItem } from '../Descriptions';
 import Loading from '../Loading';

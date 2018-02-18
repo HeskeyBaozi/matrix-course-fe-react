@@ -1,8 +1,8 @@
 import { flow, types } from 'mobx-state-tree';
 import { LoadingStore } from '../Loading';
-import { IPaginationArgs } from './interfaces';
+import { IMessagesStatusPutBody, IPaginationArgs } from './interfaces';
 import { MessageState } from './message';
-import { fetchNotifications } from './service';
+import { fetchNotifications, putMessagesStatus } from './service';
 import { INotificationSocketStore, NotificationSocketStore } from './socket';
 
 const NotificationState = types
@@ -25,6 +25,10 @@ const NotificationStore = types
         self.list = notifications;
         self.total = total_num;
         self.unread = unread_num;
+      }),
+      SetNotificationsStatusAsync: flow(function* SetNotificationsStatusAsync(body: IMessagesStatusPutBody) {
+        const result = yield putMessagesStatus(body);
+        console.log(result);
       })
     };
   });

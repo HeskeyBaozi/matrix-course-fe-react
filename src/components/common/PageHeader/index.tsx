@@ -1,5 +1,4 @@
 import { Breadcrumb, Tabs } from 'antd';
-import { Location } from 'history';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React from 'react';

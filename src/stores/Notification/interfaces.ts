@@ -8,3 +8,8 @@ export interface INotificationsResult {
   total_num: number;
   unread_num: number;
 }
+
+export interface IMessagesStatusPutBody {
+  id: number[];
+  status: boolean;
+}
