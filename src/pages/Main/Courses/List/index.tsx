@@ -3,7 +3,6 @@ import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
 import { RouteConfigComponentProps } from 'react-router-config';
-import { Link } from 'react-router-dom';
 import Loading from '../../../../components/common/Loading';
 import { ICourseItem, ICoursesStore } from '../../../../stores/Courses';
 import CourseCard from './CourseCard';
@@ -20,6 +19,14 @@ interface ICoursesListProps extends RouteConfigComponentProps<ICoursesListParams
 @inject('$Courses')
 @observer
 export default class CoursesList extends React.Component<ICoursesListProps> {
+
+  static renderItem(item: ICourseItem) {
+    return (
+      <List.Item className={ styles.listItem }>
+        <CourseCard item={ item } />
+      </List.Item>
+    );
+  }
 
   @observable
   searchValue = '';
@@ -131,19 +138,11 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
           pagination={ this.pagination }
           grid={ { gutter: 16, xl: 3, lg: 2, md: 1, sm: 1, xs: 1 } }
           dataSource={ this.pagedDataSource }
-          renderItem={ this.renderItem }
+          renderItem={ CoursesList.renderItem }
         />
       </div>
     );
   }
-
-  renderItem = (item: ICourseItem) => (
-    <List.Item className={ styles.listItem }>
-      <Link to={ `/course/${item.course_id}` }>
-        <CourseCard item={ item } />
-      </Link>
-    </List.Item>
-  )
 
   render() {
     return [

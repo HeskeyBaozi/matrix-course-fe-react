@@ -30,23 +30,17 @@ interface IPageHeaderProps extends RouteComponentProps<any> {
 @observer
 class PageHeader extends React.Component<IPageHeaderProps> {
 
-  headDiv: HTMLDivElement;
-
   handleHeadDivRef = (div: HTMLDivElement) => {
-    this.headDiv = div;
+    if (div) {
+      const { $Global } = this.props;
+      $Global!.setPageHeaderHeight(div.offsetHeight);
+    }
   }
 
   handleTabChange = (key: string) => {
     const { onTabChange } = this.props;
     if (onTabChange) {
       onTabChange(key);
-    }
-  }
-
-  componentDidMount() {
-    const { $Global } = this.props;
-    if (this.headDiv) {
-      $Global!.setPageHeaderHeight(this.headDiv.offsetHeight);
     }
   }
 

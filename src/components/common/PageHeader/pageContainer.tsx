@@ -1,8 +1,9 @@
 import { Badge } from 'antd';
 import { computed } from 'mobx';
-import { observer } from 'mobx-react';
+import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteConfig, RouteConfigComponentProps } from 'react-router-config';
+import { IGlobalStore } from '../../../stores/Global';
 import Descriptions, { IDescriptionItem } from '../Descriptions';
 import Loading from '../Loading';
 import PageHeader from './index';
@@ -20,9 +21,11 @@ interface IPageContainerProps {
   extra?: React.ReactNode;
   globalRoutes?: RouteConfig[];
   dataSource?: IDescriptionItem[];
+  $Global?: IGlobalStore;
   title: string;
 }
 
+@inject('$Global')
 @observer
 export default class PageContainer extends React.Component<IPageContainerProps> {
 
@@ -49,7 +52,8 @@ export default class PageContainer extends React.Component<IPageContainerProps> 
   }
 
   render() {
-    const { logo, tabList, onTabChange, tabActiveKey, children, globalRoutes, extra } = this.props;
+    const { logo, tabList, onTabChange, tabActiveKey, children, $Global, extra } = this.props;
+    const { globalRoutes = $Global!.globalRoutes } = this.props;
     return (
       <div style={ { margin: '-1.5rem' } }>
         <PageHeader

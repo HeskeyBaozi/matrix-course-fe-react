@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree';
 
 export const UserState = types
-  .model({
+  .model('User', {
     email: types.maybe(types.string),
     homepage: types.maybe(types.string),
     phone: types.maybe(types.string),

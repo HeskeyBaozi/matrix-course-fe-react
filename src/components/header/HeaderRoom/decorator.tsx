@@ -7,6 +7,8 @@ export default function withHeaderRoom<T extends { $Global?: IGlobalStore }>(
   return ((Component: React.ComponentType<T>) => {
     return class WithHeaderRoom extends React.Component<T> {
 
+      static displayName = `WithHeaderRoom(${Component.displayName})`;
+
       componentDidMount() {
         if (this.props.$Global) {
           this.props.$Global.setHeaderText(

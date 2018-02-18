@@ -1,10 +1,16 @@
 import { types } from 'mobx-state-tree';
+import { rootRoutes } from '../../pages/router';
 
 const GlobalState = types
   .model('Global', {
     collapsed: true,
     headerText: 'Hello, Matrix!!!',
     pageHeaderHeight: Infinity
+  })
+  .volatile((self) => {
+    return {
+      globalRoutes: rootRoutes
+    };
   })
   .views((self) => {
     return {

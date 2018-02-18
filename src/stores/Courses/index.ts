@@ -1,10 +1,10 @@
-import { flow, onSnapshot, types } from 'mobx-state-tree';
+import { flow, types } from 'mobx-state-tree';
 import { LoadingStore } from 'src/stores/Loading';
 import { UserState } from '../Profile/user';
 import { fetchCoursesList } from './services';
 
 const CourseItem = types
-  .model({
+  .model('CourseItem', {
     course_id: types.identifier(types.number),
     course_name: types.string,
     creator: UserState,
@@ -15,27 +15,27 @@ const CourseItem = types
     status: types.enumeration('status', [ 'open', 'close' ]),
     student_num: types.number,
     teacher: types.string,
-    term: types.string,
-    unfinished_num: types.number
+    term: types.string
+    // unfinished_num: types.number
   });
 
 type CourseItemType = typeof CourseItem.Type;
 export interface ICourseItem extends CourseItemType { }
 
 const CoursesState = types
-  .model({
+  .model('Courses', {
     courses: types.maybe(types.array(CourseItem))
   })
   .views((self) => {
     return {
       get openList() {
         if (self.courses) {
-          return self.courses.filter(({status}) => status === 'open');
+          return self.courses.filter(({ status }) => status === 'open');
         }
       },
       get closeList() {
         if (self.courses) {
-          return self.courses.filter(({status}) => status === 'close');
+          return self.courses.filter(({ status }) => status === 'close');
         }
       }
     };
@@ -59,8 +59,3 @@ type CoursesStoreType = typeof CoursesStore.Type;
 export interface ICoursesStore extends CoursesStoreType { }
 
 export const coursesStore: ICoursesStore = CoursesStore.create();
-
-onSnapshot(coursesStore, (snapshot) => {
-  console.log('snapshot');
-  console.dir(snapshot);
-});

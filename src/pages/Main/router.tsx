@@ -6,6 +6,7 @@ import { createMenu } from '../../components/menu/GeneralMenu';
 import { dynamic } from '../../utils/dynamic';
 import { routes as coursesRoutes } from './Courses/router';
 import { routes as homeRoutes } from './Home/router';
+import { routes as notificationRoutes } from './Notification/router';
 
 const MainComponent = dynamic(() => import('./index'));
 
@@ -20,6 +21,12 @@ export const routes: IRouteConfigWithBreadcrumb[] = [
     component: dynamic(() => import('./Courses')),
     breadcrumbName: '所有课程',
     routes: coursesRoutes
+  },
+  {
+    path: '/notification',
+    breadcrumbName: '所有消息',
+    component: dynamic(() => import('./Notification')),
+    routes: notificationRoutes
   },
   {
     path: '*',

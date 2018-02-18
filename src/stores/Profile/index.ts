@@ -5,12 +5,13 @@ import { fetchProfile } from './services';
 import { UserState } from './user';
 
 const OneProfileState = types
-.compose(
-  types.model({
-    nickname: types.string
-  }),
-  UserState
-);
+  .compose(
+    types.model({
+      nickname: types.string
+    }),
+    UserState
+  )
+  .named('Profile');
 
 const ProfileState = types
   .model({

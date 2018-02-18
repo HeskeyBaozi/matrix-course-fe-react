@@ -1,7 +1,7 @@
-import { addMiddleware, types } from 'mobx-state-tree';
+import { addMiddleware, applyAction, types } from 'mobx-state-tree';
 
 const LoadingState = types
-  .model({
+  .model('Loading', {
     $loading: types.optional(types.map(types.boolean), {})
   });
 
@@ -15,14 +15,21 @@ export const LoadingStore = LoadingState
     addMiddleware(self, (call, next) => {
       if (/Async$/.test(call.name)) {
         if (call.type === 'flow_spawn') {
-          self.$loading.set(call.name, true);
+          applyAction(self, { name: 'startLoading', args: [ call.name ] });
         } else if (call.type === 'flow_return' || call.type === 'flow_throw') {
-          self.$loading.delete(call.name);
+          applyAction(self, { name: 'endLoading', args: [ call.name ] });
         }
       }
       return next(call);
     });
-    return {};
+    return {
+      startLoading(name: string) {
+        self.$loading.set(name, true);
+      },
+      endLoading(name: string) {
+        self.$loading.delete(name);
+      }
+    };
   });
 
 type ILoadingStoreType = typeof LoadingStore.Type;

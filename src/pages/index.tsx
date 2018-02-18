@@ -50,8 +50,8 @@ export default class App extends React.Component {
     return (
       <Provider { ...stores }>
         <div id={ 'app' }>
-          <DevTools/>
-          <Loading loading={ $Login.$loading.get('QueryLoginStatusAsync') } fullScreen={ true } tip={ 'Loading...' }/>
+          {/*<DevTools/>*/ }
+          <Loading loading={ $Login.$loading.get('QueryLoginStatusAsync') } fullScreen={ true } tip={ 'Loading...' } />
           { this.Routes }
         </div>
       </Provider>

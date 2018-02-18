@@ -2,6 +2,7 @@ import { Avatar, Badge, Card } from 'antd';
 import { computed } from 'mobx';
 import { observer } from 'mobx-react';
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Descriptions, { IDescriptionItem } from '../../../../../components/common/Descriptions';
 import TextFields, { ITextFieldItem } from '../../../../../components/common/TextFields';
 import { ICourseItem } from '../../../../../stores/Courses';
@@ -64,20 +65,24 @@ export default class CourseCard extends React.Component<ICourseCradProps> {
   }
 
   render() {
+    const { item } = this.props;
+    const { course_id } = item;
     return (
-      <Card
-        hoverable={ true }
-        title={ this.Title }
-        className={ styles.cardBody }
-      >
-        <Descriptions
-          style={ { marginBottom: '1.5rem' } }
-          layout={ 'vertical' }
-          col={ 2 }
-          dataSource={ this.descriptions }
-        />
-        <TextFields dataSource={ this.textFields } />
-      </Card>
+      <Link to={ `/course/${course_id}` }>
+        <Card
+          hoverable={ true }
+          title={ this.Title }
+          className={ styles.cardBody }
+        >
+          <Descriptions
+            style={ { marginBottom: '1.5rem' } }
+            layout={ 'vertical' }
+            col={ 2 }
+            dataSource={ this.descriptions }
+          />
+          <TextFields dataSource={ this.textFields } />
+        </Card>
+      </Link>
     );
   }
 }

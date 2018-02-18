@@ -48,6 +48,7 @@
     "@types/react-router": "^4.0.21",
     "@types/react-router-config": "^1.0.6",
     "@types/react-router-dom": "^4.2.4",
+    "@types/socket.io-client": "^1.4.32",
     "chai": "^4.1.2",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",

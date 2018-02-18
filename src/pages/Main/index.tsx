@@ -1,4 +1,4 @@
-import { Avatar, Icon, Layout } from 'antd';
+import { Avatar, Badge, Icon, Layout } from 'antd';
 import { computed } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
@@ -10,6 +10,7 @@ import Loading from '../../components/common/Loading';
 import HeaderRoom from '../../components/header/HeaderRoom';
 import { ICoursesStore } from '../../stores/Courses';
 import { IGlobalStore } from '../../stores/Global';
+import { INotificationStore } from '../../stores/Notification';
 import { IProfileStore } from '../../stores/Profile';
 import styles from './index.module.less';
 import { menuRoutes } from './router';
@@ -20,9 +21,10 @@ interface IMainProps extends RouteConfigComponentProps<{}> {
   $Global?: IGlobalStore;
   $Profile?: IProfileStore;
   $Courses?: ICoursesStore;
+  $Notification?: INotificationStore;
 }
 
-@inject('$Global', '$Profile', '$Courses')
+@inject('$Global', '$Profile', '$Courses', '$Notification')
 @observer
 export default class Main extends React.Component<IMainProps> {
 
@@ -32,11 +34,17 @@ export default class Main extends React.Component<IMainProps> {
    * profile, courses...
    */
   async componentDidMount() {
-    const { $Profile, $Courses } = this.props;
+    const { $Profile, $Courses, $Notification } = this.props;
     await Promise.all([
       $Profile!.LoadProfileAsync(),
-      $Courses!.LoadCoursesAsync()
+      $Courses!.LoadCoursesAsync(),
+      $Notification!.LoadNotificationsAsync({ current: 1, pageSize: 20 })
     ]);
+  }
+
+  componentWillUnmount() {
+    const { $Notification } = this.props;
+    $Notification!.closeSocket();
   }
 
   handleToggle = () => {
@@ -83,6 +91,18 @@ export default class Main extends React.Component<IMainProps> {
   }
 
   @computed
+  get NotificationBell() {
+    const { $Notification } = this.props;
+    return (
+      <span className={ styles.action }>
+        <Badge dot={ Boolean($Notification!.unread) }>
+          <Icon type={ 'bell' } />
+        </Badge>
+      </span>
+    );
+  }
+
+  @computed
   get Header() {
     const { $Global, $Profile } = this.props;
     return (
@@ -96,9 +116,7 @@ export default class Main extends React.Component<IMainProps> {
           <span>The Art of Coding</span>
         </HeaderRoom>
         <div className={ styles.right }>
-          <span className={ styles.action }>
-            <Icon type={ 'bell' } />
-          </span>
+          { this.NotificationBell }
           <span className={ styles.action }>
             <Loading loading={ !$Profile!.profile || $Profile!.$loading.get('LoadProfileAsync') } />
             <Avatar size={ 'large' } icon={ 'user' } src={ $Profile!.avatarUrl } />
