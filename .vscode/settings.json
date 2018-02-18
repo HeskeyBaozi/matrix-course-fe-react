@@ -1,0 +1,14 @@
+{
+  "workbench.startupEditor": "newUntitledFile",
+  "workbench.iconTheme": "vscode-icons",
+  "vsicons.projectDetection.autoReload": true,
+  "editor.fontFamily": "'Fira Code'",
+  "editor.fontLigatures": true,
+  "workbench.colorTheme": "Atom One Dark",
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBrackets": true,
+  "beautify.tabSize": 2,
+  "csscomb.formatOnSave": true,
+  "csscomb.preset": "./.csscomb.json",
+  "tslint.autoFixOnSave": true,
+  "typescript.format.insertSpaceAfterOpeningAndBeforeClosingJsxExpressionBraces": true
+}
