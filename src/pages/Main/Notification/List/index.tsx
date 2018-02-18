@@ -1,5 +1,5 @@
 import { Avatar, Badge, Button, Card, List } from 'antd';
-import { action, autorun, computed, IReactionDisposer, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React from 'react';
 import { RouteConfigComponentProps } from 'react-router-config';
@@ -17,8 +17,6 @@ interface INotificationList extends RouteConfigComponentProps<{}> {
 @observer
 export default class NotificationList extends React.Component<INotificationList> {
 
-  disposer: IReactionDisposer;
-
   @observable.ref
   page = {
     current: 1,
@@ -34,7 +32,8 @@ export default class NotificationList extends React.Component<INotificationList>
       current: next,
       pageSize: nextSize
     };
-    console.log(nextSize, this.pagination);
+    const { $Notification } = this.props;
+    $Notification!.LoadNotificationsAsync(this.pagination);
   }
 
   @action
@@ -43,6 +42,8 @@ export default class NotificationList extends React.Component<INotificationList>
       current: 1,
       pageSize: nextSize
     };
+    const { $Notification } = this.props;
+    $Notification!.LoadNotificationsAsync(this.pagination);
   }
 
   @action
@@ -55,21 +56,12 @@ export default class NotificationList extends React.Component<INotificationList>
     if (!$Notification!.list || $Notification!.list!.length !== this.pagination.pageSize) {
       await $Notification!.LoadNotificationsAsync(this.pagination);
     }
-    this.disposer = autorun(async (r) => {
-      console.log('autorun reload');
-      r.trace();
-
-      $Notification!.LoadNotificationsAsync(this.pagination);
-    });
   }
 
   componentWillUnmount() {
-    const { $Notification } = this.props;
     if (this.isDirty) {
+      const { $Notification } = this.props;
       $Notification!.LoadNotificationsAsync(this.pagination);
-    }
-    if (this.disposer) {
-      this.disposer();
     }
   }
 

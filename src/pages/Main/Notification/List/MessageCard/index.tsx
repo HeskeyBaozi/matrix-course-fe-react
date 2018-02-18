@@ -8,6 +8,7 @@ import { INotificationStore } from 'src/stores/Notification';
 import IconText from '../../../../../components/common/IconText';
 import Loading from '../../../../../components/common/Loading';
 import { MessageStateType } from '../../../../../stores/Notification/message';
+import styles from './index.module.less';
 
 interface IMessageCardProps {
   item: MessageStateType;
@@ -94,7 +95,7 @@ export default class MessageCard extends React.Component<IMessageCardProps> {
   get Actions() {
     const { item: { displayLink }, $Notification } = this.props;
     const actions = [ (
-      <div style={ { position: 'relative' } } onClick={ this.handleSetStatusClick }>
+      <div onClick={ this.handleSetStatusClick }>
         <Loading loading={ this.loading } />
         <IconText
           key={ 'mark' }
@@ -117,7 +118,7 @@ export default class MessageCard extends React.Component<IMessageCardProps> {
   @computed
   get Content() {
     return (
-      <Card actions={ this.Actions }>
+      <Card actions={ this.Actions } className={ styles.cardActions }>
         <Card.Meta
           avatar={ this.Avatar }
           title={ this.Title }
