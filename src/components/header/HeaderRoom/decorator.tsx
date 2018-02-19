@@ -2,7 +2,7 @@ import React from 'react';
 import { IGlobalStore } from '../../../stores/Global';
 
 export default function withHeaderRoom<T extends { $Global?: IGlobalStore }>(
-  getHeaderText: <P = T>(props: P) => string
+  getHeaderText: (props: T) => string
 ) {
   return ((Component: React.ComponentType<T>) => {
     return class WithHeaderRoom extends React.Component<T> {

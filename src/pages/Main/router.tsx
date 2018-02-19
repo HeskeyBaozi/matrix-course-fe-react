@@ -24,7 +24,7 @@ export const routes: IRouteConfigWithBreadcrumb[] = [
   },
   {
     path: '/notification',
-    breadcrumbName: '所有消息',
+    breadcrumbName: '所有通知',
     component: dynamic(() => import('./Notification')),
     routes: notificationRoutes
   },
@@ -41,7 +41,7 @@ export const menuRoutes: RouteConfig[] = [
       dataSource: [
         { url: '/home', icon: 'home', title: '概览' },
         { url: '/courses', path: '/courses/:status', icon: 'book', title: '课程' },
-        { url: '/notification', icon: 'bell', title: '消息' },
+        { url: '/notification', path: '/notification/:type', icon: 'bell', title: '通知' },
         { url: '/setting', icon: 'setting', title: '设置' },
         { url: '/feedback', icon: 'smile-o', title: '反馈' }
       ]

@@ -12,7 +12,6 @@ import styles from './index.module.less';
 
 interface IMessageCardProps {
   item: MessageStateType;
-  onDirty?: () => void;
   $Notification?: INotificationStore;
 }
 
@@ -21,13 +20,10 @@ interface IMessageCardProps {
 export default class MessageCard extends React.Component<IMessageCardProps> {
 
   handleSetStatusClick = async (e: SyntheticEvent<HTMLDivElement>) => {
-    const { item: { id, status }, $Notification, onDirty } = this.props;
+    const { item: { id, status }, $Notification } = this.props;
     await $Notification!.SetNotificationsStatusAsync({
       id: [ id ], status: !status
     });
-    if (onDirty) {
-      onDirty();
-    }
   }
 
   @computed

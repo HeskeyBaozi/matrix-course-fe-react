@@ -28,13 +28,17 @@ const NotificationStore = types
       }),
       SetNotificationsStatusAsync: flow(function* SetNotificationsStatusAsync(body: IMessagesStatusPutBody) {
         const result = yield putMessagesStatus(body);
+        let readDelta: number = 0;
         body.id.forEach((id) => {
           const target = self.list && self.list.find(({ id: listId }) => id === listId);
           if (target) {
             target.status = body.status ? 1 : 0;
+            readDelta += body.status ? 1 : -1;
           }
         });
-        console.log(result);
+        if (self.unread !== null) {
+          self.unread -= readDelta;
+        }
       })
     };
   });

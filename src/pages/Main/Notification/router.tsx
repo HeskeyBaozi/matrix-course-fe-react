@@ -6,8 +6,17 @@ import { dynamic } from '../../../utils/dynamic';
 
 export const routes: IRouteConfigWithBreadcrumb[] = [
   {
+    path: '/notification/messages',
+    breadcrumbName: '消息',
+    component: dynamic(() => import('./MessageList'))
+  },
+  {
+    path: '/notification/todos',
+    breadcrumbName: '通知',
+    component: () => (<div>todos</div>)
+  },
+  {
     path: '/notification',
-    exact: true,
-    component: dynamic(() => import('./List'))
+    component: () => <Redirect to={ '/notification/messages' } />
   }
 ];

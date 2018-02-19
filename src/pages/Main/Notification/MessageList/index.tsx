@@ -1,20 +1,24 @@
-import { Avatar, Badge, Button, Card, Icon, Input, List, Radio, Select } from 'antd';
+import { Avatar, Badge, Button, Card, Divider, Icon, Input, List, Radio, Select, Tooltip } from 'antd';
 import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
 import { RouteConfigComponentProps } from 'react-router-config';
 import { Link } from 'react-router-dom';
 import Loading from '../../../../components/common/Loading';
+import withHeaderRoom from '../../../../components/header/HeaderRoom/decorator';
+import { IGlobalStore } from '../../../../stores/Global';
 import { INotificationStore } from '../../../../stores/Notification';
 import { IDiscussionState, MessageStateType } from '../../../../stores/Notification/message';
 import { MessageStatusFilter, MessageTypeFilter } from './enum';
 import MessageCard from './MessageCard';
 
 interface INotificationList extends RouteConfigComponentProps<{}> {
+  $Global?: IGlobalStore;
   $Notification?: INotificationStore;
 }
 
-@inject('$Notification')
+@inject('$Global', '$Notification')
+@withHeaderRoom<INotificationList>(() => '所有消息')
 @observer
 export default class NotificationList extends React.Component<INotificationList> {
 
@@ -23,9 +27,6 @@ export default class NotificationList extends React.Component<INotificationList>
     current: 1,
     pageSize: 20
   };
-
-  @observable
-  isDirty = false;
 
   @observable
   filter = {
@@ -54,22 +55,20 @@ export default class NotificationList extends React.Component<INotificationList>
     $Notification!.LoadNotificationsAsync(this.pagination);
   }
 
-  @action
-  handleInnerCardChange = () => {
-    this.isDirty = true;
+  handleClickOneKeyRead = (e: SyntheticEvent<HTMLButtonElement>) => {
+    if (this.UnreadDataSource) {
+      const { $Notification } = this.props;
+      $Notification!.SetNotificationsStatusAsync({
+        id: [ ...this.UnreadDataSource.map(({ id }) => id) ],
+        status: true
+      });
+    }
   }
 
   async componentDidMount() {
     const { $Notification } = this.props;
     if (!$Notification!.list || $Notification!.list!.length !== this.pagination.pageSize) {
       await $Notification!.LoadNotificationsAsync(this.pagination);
-    }
-  }
-
-  componentWillUnmount() {
-    if (this.isDirty) {
-      const { $Notification } = this.props;
-      $Notification!.LoadNotificationsAsync(this.pagination);
     }
   }
 
@@ -97,40 +96,44 @@ export default class NotificationList extends React.Component<INotificationList>
 
   @computed
   get filteredDataSource() {
-    if (this.baseDataSource === null) {
-      return null;
-    }
-    return this.baseDataSource.filter(({ displayName, type, displayText, status }) => {
-      let result = true;
-      if (this.filter.status !== MessageStatusFilter.All) {
-        result = result && (
-          (this.filter.status === MessageStatusFilter.Read && status !== 0) ||
-          (this.filter.status === MessageStatusFilter.Unread && status === 0)
-        );
-      }
-      if (this.filter.type !== MessageTypeFilter.All) {
-        result = result && (
-          (this.filter.type === MessageTypeFilter.Course && type === 'course') ||
-          (this.filter.type === MessageTypeFilter.Discussion && type === 'discussion') ||
-          (this.filter.type === MessageTypeFilter.Homework && type === 'homework') ||
-          (this.filter.type === MessageTypeFilter.Library && type === 'library') ||
-          (this.filter.type === MessageTypeFilter.System && type === 'system')
-        );
-      }
-      if (this.filter.search !== '') {
-        result = result && (
-          (Boolean(displayName) && displayName.includes(this.filter.search)) ||
-          (Boolean(displayText) && displayText.includes(this.filter.search))
-        );
-      }
-      return result;
-    });
+    return this.baseDataSource &&
+      this.baseDataSource.filter(({ displayName, type, displayText, status }) => {
+        let result: boolean = true;
+        if (this.filter.status !== MessageStatusFilter.All) {
+          result = result && (
+            (this.filter.status === MessageStatusFilter.Read && status !== 0) ||
+            (this.filter.status === MessageStatusFilter.Unread && status === 0)
+          );
+        }
+        if (this.filter.type !== MessageTypeFilter.All) {
+          result = result && (
+            (this.filter.type === MessageTypeFilter.Course && type === 'course') ||
+            (this.filter.type === MessageTypeFilter.Discussion && type === 'discussion') ||
+            (this.filter.type === MessageTypeFilter.Homework && type === 'homework') ||
+            (this.filter.type === MessageTypeFilter.Library && type === 'library') ||
+            (this.filter.type === MessageTypeFilter.System && type === 'system')
+          );
+        }
+        if (this.filter.search !== '') {
+          result = result && (
+            (typeof displayName === 'string' && displayName.includes(this.filter.search)) ||
+            (typeof displayText === 'string' && displayText.includes(this.filter.search))
+          );
+        }
+        return result;
+      });
+  }
+
+  @computed
+  get UnreadDataSource() {
+    return this.baseDataSource &&
+      this.baseDataSource.filter(({ status }) => status === 0);
   }
 
   renderItem = (item: MessageStateType) => {
     return (
       <List.Item>
-        <MessageCard item={ item } onDirty={ this.handleInnerCardChange } />
+        <MessageCard item={ item } />
       </List.Item>
     );
   }
@@ -172,12 +175,6 @@ export default class NotificationList extends React.Component<INotificationList>
   @computed
   get Filter() {
 
-    const options = [
-      { label: '全部消息', value: MessageStatusFilter.All },
-      { label: '未读', value: MessageStatusFilter.Unread },
-      { label: '已读', value: MessageStatusFilter.Read }
-    ];
-
     const selectOptions = [
       { label: '全部消息类型', value: MessageTypeFilter.All },
       { label: '作业', value: MessageTypeFilter.Homework },
@@ -187,18 +184,43 @@ export default class NotificationList extends React.Component<INotificationList>
       { label: '系统', value: MessageTypeFilter.System }
     ];
 
+    const { $Notification } = this.props;
+
     return (
       <Card
         style={ { marginBottom: '1.5rem', textAlign: 'center' } }
         key={ 'filter' }
       >
+        <span style={ { marginRight: '1rem' } }>
+          <span style={ { marginRight: '.3rem' } }>在本页进行过滤</span>
+          <Tooltip title={ '由于服务端限制, 只能在本页中过滤' }>
+            <Icon type={ 'question-circle-o' } />
+          </Tooltip>
+        </span>
         <Radio.Group
           name={ 'status' }
           value={ this.filter.status }
           onChange={ this.handleStatusChange }
           style={ { marginRight: '1rem' } }
         >
-          { options.map(({ label, value }) => <Radio.Button key={ value } value={ value }>{ label }</Radio.Button>) }
+          <Radio.Button
+            key={ MessageStatusFilter.All }
+            value={ MessageStatusFilter.All }
+          >
+            <span style={ { marginRight: '.5rem' } }>{ '全部' }</span>
+            <Badge
+              status={ 'default' }
+              text={ '' + $Notification!.total }
+            />
+          </Radio.Button>
+          <Radio.Button
+            key={ MessageStatusFilter.Unread }
+            value={ MessageStatusFilter.Unread }
+          >
+            <span style={ { marginRight: '.5rem' } }>{ '未读' }</span>
+            <Badge status={ $Notification!.unread ? 'error' : 'success' } text={ '' + $Notification!.unread } />
+          </Radio.Button>
+          <Radio.Button key={ MessageStatusFilter.Read } value={ MessageStatusFilter.Read }>{ '已读' }</Radio.Button>
         </Radio.Group>
         <Select
           value={ this.filter.type }
@@ -214,6 +236,16 @@ export default class NotificationList extends React.Component<INotificationList>
           prefix={ <Icon type={ 'search' } style={ { zIndex: -1 } } /> }
           onChange={ this.handleSearchValueChange }
         />
+        <Divider dashed={ true } />
+        <Badge count={ this.UnreadDataSource && this.UnreadDataSource.length || 0 }>
+          <Button
+            icon={ 'check' }
+            disabled={ !this.UnreadDataSource || this.UnreadDataSource && this.UnreadDataSource.length === 0 }
+            loading={ $Notification!.$loading.get('SetNotificationsStatusAsync') }
+            onClick={ this.handleClickOneKeyRead }
+          >一键标记本页消息为已读
+          </Button>
+        </Badge>
       </Card>
     );
   }

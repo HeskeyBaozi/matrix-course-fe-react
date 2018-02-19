@@ -96,7 +96,7 @@ const CourseState = types
 const HomeworkContentState = types
   .model({
     action: types.string,
-    prob_title: types.string,
+    prob_title: types.maybe(types.string),
     link: types.maybe(types.model({
       type: types.maybe(types.string),
       course_id: types.number,
