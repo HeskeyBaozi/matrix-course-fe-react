@@ -28,6 +28,12 @@ const NotificationStore = types
       }),
       SetNotificationsStatusAsync: flow(function* SetNotificationsStatusAsync(body: IMessagesStatusPutBody) {
         const result = yield putMessagesStatus(body);
+        body.id.forEach((id) => {
+          const target = self.list && self.list.find(({ id: listId }) => id === listId);
+          if (target) {
+            target.status = body.status ? 1 : 0;
+          }
+        });
         console.log(result);
       })
     };

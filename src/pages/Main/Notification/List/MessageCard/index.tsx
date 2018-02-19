@@ -20,23 +20,14 @@ interface IMessageCardProps {
 @observer
 export default class MessageCard extends React.Component<IMessageCardProps> {
 
-  @observable
-  status = Boolean(this.props.item.status);
-
-  @action
-  setStatus(value: boolean) {
-    this.status = value;
-  }
-
   handleSetStatusClick = async (e: SyntheticEvent<HTMLDivElement>) => {
     const { item: { id, status }, $Notification, onDirty } = this.props;
     await $Notification!.SetNotificationsStatusAsync({
-      id: [ id ], status: !this.status
+      id: [ id ], status: !status
     });
     if (onDirty) {
       onDirty();
     }
-    this.setStatus(!this.status);
   }
 
   @computed
@@ -49,14 +40,14 @@ export default class MessageCard extends React.Component<IMessageCardProps> {
 
   @computed
   get Title() {
-    const { item: { displayName } } = this.props;
+    const { item: { displayName, status } } = this.props;
     return (
       <div>
         <span style={ { marginRight: '.5rem' } }>{ displayName }</span>
         <Badge
           style={ { float: 'right' } }
-          status={ this.status ? 'default' : 'error' }
-          text={ this.status ? '已读' : '未读' }
+          status={ status ? 'default' : 'error' }
+          text={ status ? '已读' : '未读' }
         />
       </div>
     );
@@ -93,15 +84,15 @@ export default class MessageCard extends React.Component<IMessageCardProps> {
 
   @computed
   get Actions() {
-    const { item: { displayLink }, $Notification } = this.props;
+    const { item: { displayLink, status }, $Notification } = this.props;
     const actions = [ (
       <div onClick={ this.handleSetStatusClick }>
         <Loading loading={ this.loading } />
         <IconText
           key={ 'mark' }
           gutter={ .5 }
-          icon={ this.status ? 'close' : 'check' }
-          title={ this.status ? '标记为未读' : '标记为已读' }
+          icon={ status ? 'close' : 'check' }
+          title={ status ? '标记为未读' : '标记为已读' }
         />
       </div>
     ) ];
