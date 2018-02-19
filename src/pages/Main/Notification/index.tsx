@@ -21,13 +21,17 @@ export default class Notification extends React.Component<INotificationProps> {
     const { $Notification } = this.props;
     return [
       {
-        key: 'messages', tab: (
+        key: 'messages', tab: expr(() => (
           <Badge dot={ Boolean($Notification!.unread) }>
             <IconText icon={ 'message' } gutter={ .3 } title={ '消息' } />
           </Badge>
-        )
+        ))
       },
-      { key: 'todos', tab: <IconText icon={ 'pushpin-o' } gutter={ .3 } title={ '待办' } /> }
+      {
+        key: 'todos', tab: expr(() => (
+          <IconText icon={ 'pushpin-o' } gutter={ .3 } title={ '待办' } />
+        ))
+      }
     ];
   }
 
