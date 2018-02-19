@@ -126,7 +126,7 @@ const HomeworkState = types
   .views(({ content, sender }) => ({
     get displayName() {
       return sender.role === 'people' && typeof sender.name !== 'string'
-        ? sender.name.nickname : sender.name;
+        ? sender.name.nickname : (sender.name as string);
     },
     get displayLink() {
       return content.link && (
@@ -179,7 +179,7 @@ const LibraryState = types
   .views(({ content, sender }) => ({
     get displayName() {
       return sender.role === 'people' && typeof sender.name !== 'string'
-        ? sender.name.nickname : sender.name;
+        ? sender.name.nickname : (sender.name as string);
     },
     get displayLink() {
       return null; // todo: library link is not implemented.
