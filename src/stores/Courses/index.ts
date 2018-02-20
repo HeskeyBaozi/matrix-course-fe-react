@@ -1,26 +1,7 @@
 import { flow, types } from 'mobx-state-tree';
 import { LoadingStore } from 'src/stores/Loading';
-import { UserState } from '../Profile/user';
+import { CourseItem } from './item';
 import { fetchCoursesList } from './services';
-
-const CourseItem = types
-  .model('CourseItem', {
-    course_id: types.identifier(types.number),
-    course_name: types.string,
-    creator: UserState,
-    progressing_num: types.number,
-    role: types.enumeration('role', [ 'student', 'TA', 'teacher' ]),
-    school_year: types.string,
-    semester: types.string,
-    status: types.enumeration('status', [ 'open', 'close' ]),
-    student_num: types.number,
-    teacher: types.string,
-    term: types.string
-    // unfinished_num: types.number
-  });
-
-type CourseItemType = typeof CourseItem.Type;
-export interface ICourseItem extends CourseItemType { }
 
 const CoursesState = types
   .model('Courses', {
