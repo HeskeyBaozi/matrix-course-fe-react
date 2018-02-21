@@ -22,6 +22,9 @@ export const StudentItem = types
     last_submission_time: types.maybe(types.Date)
   });
 
+type StudentItemType = typeof StudentItem.Type;
+export interface IStudentItem extends StudentItemType { }
+
 export const TeacherOrTaItem = types
   .model({
     author: types.model({ realname: types.string }),
@@ -32,3 +35,6 @@ export const TeacherOrTaItem = types
     submit_student_num: types.number,
     total_student: types.number
   });
+
+type TeacherOrTaItemType = typeof TeacherOrTaItem.Type;
+export interface ITeachterOrTa extends TeacherOrTaItemType { }

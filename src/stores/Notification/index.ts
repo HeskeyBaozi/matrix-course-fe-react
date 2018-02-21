@@ -6,7 +6,7 @@ import { fetchNotifications, putMessagesStatus } from './service';
 import { INotificationSocketStore, NotificationSocketStore } from './socket';
 
 const NotificationState = types
-  .model({
+  .model('NotificationState', {
     list: types.maybe(types.array(MessageState)),
     total: types.maybe(types.number),
     unread: types.maybe(types.number)
@@ -41,7 +41,8 @@ const NotificationStore = types
         }
       })
     };
-  });
+  })
+  .named('NotificationStore');
 
 type NotificationStoreType = typeof NotificationStore.Type;
 export interface INotificationStore extends NotificationStoreType { }

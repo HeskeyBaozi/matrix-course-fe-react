@@ -1,7 +1,7 @@
 import { types } from 'mobx-state-tree';
 
 const BaseTodoItem = types
-  .model({
+  .model('BaseTodoItem', {
     ca_id: types.identifier(types.number),
     courseName: types.string,
     course_id: types.number,
@@ -14,23 +14,21 @@ const BaseTodoItem = types
 
 export const StudentTodoItem = types
   .compose(
-    BaseTodoItem,
-    types.model({
-      remainingTime: types.number
-    })
-  );
+  BaseTodoItem,
+  types.model({ remainingTime: types.number }))
+  .named('StudentTodoItem');
 
 type StudentTodoItemType = typeof StudentTodoItem.Type;
 export interface IStudentTodoItem extends StudentTodoItemType { }
 
 export const TeacherOrTaTodoItem = types
   .compose(
-    BaseTodoItem,
-    types.model({
-      stuNumWaitingForJudging: types.number,
-      submittedStuNum: types.number
-    })
-  );
+  BaseTodoItem,
+  types.model({
+    stuNumWaitingForJudging: types.number,
+    submittedStuNum: types.number
+  }))
+  .named('TeacherOrTaTodoItem');
 
 type TeacherOrTaTodoItemType = typeof TeacherOrTaTodoItem.Type;
 export interface ITeacherOrTaTodoItem extends TeacherOrTaTodoItemType { }
