@@ -12,15 +12,15 @@ import { IDiscussionState, MessageStateType } from '../../../../stores/Notificat
 import { MessageStatusFilter, MessageTypeFilter } from './enum';
 import MessageCard from './MessageCard';
 
-interface INotificationList extends RouteConfigComponentProps<{}> {
+interface INotificationListProps extends RouteConfigComponentProps<{}> {
   $Global?: IGlobalStore;
   $Notification?: INotificationStore;
 }
 
 @inject('$Global', '$Notification')
-@withHeaderRoom<INotificationList>(() => '所有消息')
+@withHeaderRoom((props: INotificationListProps) => '所有消息')
 @observer
-export default class NotificationList extends React.Component<INotificationList> {
+export default class NotificationList extends React.Component<INotificationListProps> {
 
   @observable
   page = {

@@ -25,7 +25,7 @@ export default function withHeaderRoom<T extends { $Global?: IGlobalStore }>(
 
       render() {
         return (
-          <Component {...this.props} />
+          <Component { ...this.props } />
         );
       }
     };
