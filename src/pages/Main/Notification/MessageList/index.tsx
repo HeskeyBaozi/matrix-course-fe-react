@@ -2,7 +2,6 @@ import { Avatar, Badge, Button, Card, Divider, Icon, Input, List, Radio, Select,
 import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
-import { RouteConfigComponentProps } from 'react-router-config';
 import { Link } from 'react-router-dom';
 import Loading from '../../../../components/common/Loading';
 import withHeaderRoom from '../../../../components/header/HeaderRoom/decorator';
@@ -12,13 +11,13 @@ import { IDiscussionState, MessageStateType } from '../../../../stores/Notificat
 import { MessageStatusFilter, MessageTypeFilter } from './enum';
 import MessageCard from './MessageCard';
 
-interface INotificationListProps extends RouteConfigComponentProps<{}> {
+interface INotificationListProps {
   $Global?: IGlobalStore;
   $Notification?: INotificationStore;
 }
 
 @inject('$Global', '$Notification')
-@withHeaderRoom((props: INotificationListProps) => '所有消息')
+@withHeaderRoom<INotificationListProps>((props) => '所有消息')
 @observer
 export default class NotificationList extends React.Component<INotificationListProps> {
 

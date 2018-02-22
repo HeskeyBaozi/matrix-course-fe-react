@@ -5,7 +5,7 @@ const BaseTodoItem = types
     ca_id: types.identifier(types.number),
     courseName: types.string,
     course_id: types.number,
-    enddate: types.Date,
+    enddate: types.string,
     grade_at_end: types.number,
     ptype_id: types.number,
     title: types.string,

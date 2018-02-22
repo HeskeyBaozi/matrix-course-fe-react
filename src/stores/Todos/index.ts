@@ -1,4 +1,4 @@
-import { flow, types } from 'mobx-state-tree';
+import { flow, onSnapshot, types } from 'mobx-state-tree';
 import { LoadingStore } from '../Loading';
 import { fetchStudentTodos, fetchTeacherOrTaTodos } from './service';
 import { StudentTodoItem, TeacherOrTaTodoItem } from './todoitem';
@@ -18,8 +18,8 @@ const TodosStore = types
     return {
       LoadTodosAsync: flow(function* LoadTodosAsync() {
         const [
-          { data: studentList },
-          { data: teacherOrTaList }
+          { data: { data: studentList } },
+          { data: { data: teacherOrTaList } }
         ] = yield Promise.all([
           fetchStudentTodos(),
           fetchTeacherOrTaTodos()
@@ -35,3 +35,7 @@ type TodosStoreType = typeof TodosStore.Type;
 export interface ITodosStore extends TodosStoreType { }
 
 export const todosStore: ITodosStore = TodosStore.create();
+
+onSnapshot(todosStore, (s) => {
+  console.log(s);
+});

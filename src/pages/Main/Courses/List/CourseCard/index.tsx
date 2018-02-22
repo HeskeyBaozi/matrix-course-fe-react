@@ -5,7 +5,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Descriptions, { IDescriptionItem } from '../../../../../components/common/Descriptions';
 import TextFields, { ITextFieldItem } from '../../../../../components/common/TextFields';
-import { ICourseItem } from '../../../../../stores/Courses';
+import { ICourseItem } from '../../../../../stores/Courses/item';
 import styles from './index.module.less';
 
 interface ICourseCradProps {

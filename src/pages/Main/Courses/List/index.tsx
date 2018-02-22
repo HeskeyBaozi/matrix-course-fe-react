@@ -4,7 +4,8 @@ import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
 import { RouteConfigComponentProps } from 'react-router-config';
 import Loading from '../../../../components/common/Loading';
-import { ICourseItem, ICoursesStore } from '../../../../stores/Courses';
+import { ICoursesStore } from '../../../../stores/Courses';
+import { ICourseItem } from '../../../../stores/Courses/item';
 import CourseCard from './CourseCard';
 import styles from './index.module.less';
 

@@ -51,7 +51,6 @@ export default class Notification extends React.Component<INotificationProps> {
 
   render() {
     const { route, location } = this.props;
-    console.log(this.activeKey);
     return (
       <PageContainer
         title={ '所有通知' }

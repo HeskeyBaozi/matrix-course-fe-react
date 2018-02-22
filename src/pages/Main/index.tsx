@@ -12,6 +12,7 @@ import { ICoursesStore } from '../../stores/Courses';
 import { IGlobalStore } from '../../stores/Global';
 import { INotificationStore } from '../../stores/Notification';
 import { IProfileStore } from '../../stores/Profile';
+import { ITodosStore } from '../../stores/Todos';
 import styles from './index.module.less';
 import { menuRoutes } from './router';
 
@@ -22,9 +23,10 @@ interface IMainProps extends RouteConfigComponentProps<{}> {
   $Profile?: IProfileStore;
   $Courses?: ICoursesStore;
   $Notification?: INotificationStore;
+  $Todos?: ITodosStore;
 }
 
-@inject('$Global', '$Profile', '$Courses', '$Notification')
+@inject('$Global', '$Profile', '$Courses', '$Notification', '$Todos')
 @observer
 export default class Main extends React.Component<IMainProps> {
 
@@ -34,11 +36,12 @@ export default class Main extends React.Component<IMainProps> {
    * profile, courses...
    */
   async componentDidMount() {
-    const { $Profile, $Courses, $Notification } = this.props;
+    const { $Profile, $Courses, $Notification, $Todos } = this.props;
     await Promise.all([
       $Profile!.LoadProfileAsync(),
       $Courses!.LoadCoursesAsync(),
-      $Notification!.LoadNotificationsAsync({ current: 1, pageSize: 20 })
+      $Notification!.LoadNotificationsAsync({ current: 1, pageSize: 20 }),
+      $Todos!.LoadTodosAsync()
     ]);
   }
 

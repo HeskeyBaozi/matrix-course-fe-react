@@ -1,13 +1,17 @@
 import React from 'react';
+import { RouteConfigComponentProps } from 'react-router-config';
 import { IGlobalStore } from '../../../stores/Global';
 
-export default function withHeaderRoom<T extends { $Global?: IGlobalStore }>(
+interface IInnerProps {
+  $Global?: IGlobalStore;
+}
+
+export default function withHeaderRoom<T extends IInnerProps>(
   getHeaderText: (props: T) => string
 ) {
-  return ((Component: React.ComponentType<T>) => {
-    return class WithHeaderRoom extends React.Component<T> {
+  return <C extends React.ComponentClass<T>>(Component: C): C => {
 
-      static displayName = `WithHeaderRoom(${Component.displayName})`;
+    class WithHeaderRoom extends React.Component<T> {
 
       componentDidMount() {
         if (this.props.$Global) {
@@ -24,10 +28,10 @@ export default function withHeaderRoom<T extends { $Global?: IGlobalStore }>(
       }
 
       render() {
-        return (
-          <Component { ...this.props } />
-        );
+        return React.createElement(Component, this.props);
       }
-    };
-  }) as <C extends React.ComponentType<T>>(Component: C) => C;
+    }
+
+    return WithHeaderRoom as C;
+  };
 }

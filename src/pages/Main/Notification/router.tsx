@@ -12,8 +12,8 @@ export const routes: IRouteConfigWithBreadcrumb[] = [
   },
   {
     path: '/notification/todos',
-    breadcrumbName: '通知',
-    component: () => (<div>todos</div>)
+    breadcrumbName: '待办',
+    component: dynamic(() => import('./TodoList'))
   },
   {
     path: '/notification',
