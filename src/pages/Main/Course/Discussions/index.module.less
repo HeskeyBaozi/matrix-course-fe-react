@@ -1,0 +1,34 @@
+@import '~antd/lib/style/themes/default.less';
+.listItem {
+  border-bottom: none !important;
+  :global {
+    .ant-list-item-content {
+      max-width: 100%;
+    }
+  }
+}
+
+.extraContent {
+   > * {
+    margin-right: 1rem;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
+
+.cardTitle {
+  display: flex;
+
+  align-items: center;
+  .extraContent;
+  flex-flow: row nowrap;
+}
+
+.extraContentSearch {
+  width: 16rem;
+}
+
+.discussionTitle {
+  font-size: 1.2rem;
+}

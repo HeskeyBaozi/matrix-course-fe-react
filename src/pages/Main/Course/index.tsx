@@ -80,7 +80,8 @@ export default class OneCourse extends React.Component<IOneCourseProps> {
     const courseId = Number.parseInt(match.params.course_id);
     await Promise.all([
       this.$Course.LoadOneCourseAsync(courseId),
-      this.$Course.LoadMembersAsync(courseId)
+      this.$Course.LoadMembersAsync(courseId),
+      this.$Course.LoadDiscussionsAsync(courseId)
     ]);
 
   }

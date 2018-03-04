@@ -16,17 +16,18 @@ const BaseItem = types
   });
 
 export const StudentItem = types
-  .model({
+  .compose(BaseItem, types.model({
     grade: types.maybe(types.number),
     grade_at_end: types.number,
     last_submission_time: types.maybe(types.Date)
-  });
+  }))
+  .named('StudentItem');
 
 type StudentItemType = typeof StudentItem.Type;
 export interface IStudentItem extends StudentItemType { }
 
 export const TeacherOrTaItem = types
-  .model({
+  .compose(BaseItem, types.model({
     author: types.model({ realname: types.string }),
     lib_id: types.number,
     plcheck: types.number,
@@ -34,7 +35,8 @@ export const TeacherOrTaItem = types
     pub_answer: types.number,
     submit_student_num: types.number,
     total_student: types.number
-  });
+  }))
+  .named('TeacherOrTaItem');
 
 type TeacherOrTaItemType = typeof TeacherOrTaItem.Type;
 export interface ITeachterOrTa extends TeacherOrTaItemType { }

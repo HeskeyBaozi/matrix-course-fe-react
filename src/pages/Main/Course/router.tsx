@@ -25,7 +25,7 @@ export const routes: IRouteConfigWithBreadcrumb[] = [
   },
   {
     path: '/course/:course_id/discussions',
-    component: () => <div>Discussions</div>,
+    component: dynamic(() => import('./Discussions')),
     breadcrumbName: '讨论'
   }
 ];

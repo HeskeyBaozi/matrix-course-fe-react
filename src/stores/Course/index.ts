@@ -1,13 +1,15 @@
 import { flow, types } from 'mobx-state-tree';
-import { MemberState } from '../Course/members';
-import { fetchCourseDetail, fetchCourseMembers } from '../Course/services';
-import { CourseDetail } from '../Course/type';
 import { LoadingStore } from '../Loading';
+import { DiscussionItem } from './Discussions/item';
+import { MemberState } from './members';
+import { fetchCourseDetail, fetchCourseMembers, fetchDiscussions } from './services';
+import { CourseDetail } from './type';
 
 const CourseState = types
   .model({
     detail: types.maybe(CourseDetail),
-    members: types.maybe(types.array(MemberState))
+    members: types.maybe(types.array(MemberState)),
+    discussions: types.maybe(types.array(DiscussionItem))
   })
   .views((self) => {
     return {
@@ -43,6 +45,10 @@ export const CourseStore = types
       LoadMembersAsync: flow(function* LoadMembersAsync(courseId: number) {
         const { data: { data } } = yield fetchCourseMembers(courseId);
         self.members = data;
+      }),
+      LoadDiscussionsAsync: flow(function* LoadDiscussionsAsync(courseId: number) {
+        const { data: { data } } = yield fetchDiscussions(courseId);
+        self.discussions = data;
       })
     };
   })
