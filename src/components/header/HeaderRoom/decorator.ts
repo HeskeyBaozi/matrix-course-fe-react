@@ -15,9 +15,7 @@ export default function withHeaderRoom<T extends IInnerProps>(
 
       componentDidMount() {
         if (this.props.$Global) {
-          this.props.$Global.setHeaderText(
-            getHeaderText(this.props)
-          );
+          this.props.$Global!.setHeaderText(getHeaderText(this.props));
         }
       }
 

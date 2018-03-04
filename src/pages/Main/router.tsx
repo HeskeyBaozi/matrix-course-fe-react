@@ -4,6 +4,7 @@ import { RouteConfig } from 'react-router-config';
 import { IRouteConfigWithBreadcrumb } from '../../components/common/PageHeader/interfaces';
 import createMenu from '../../components/menu/GeneralMenu';
 import { dynamic } from '../../utils/dynamic';
+import { routes as courseRoutes } from './Course/router';
 import { routes as coursesRoutes } from './Courses/router';
 import { routes as homeRoutes } from './Home/router';
 import { routes as notificationRoutes } from './Notification/router';
@@ -24,8 +25,9 @@ export const routes: IRouteConfigWithBreadcrumb[] = [
   },
   {
     path: '/course/:course_id',
-    component: () => <div>OneCourse</div>,
-    breadcrumbName: '课程'
+    component: dynamic(() => import('./Course')),
+    breadcrumbName: '课程',
+    routes: courseRoutes
   },
   {
     path: '/notification',

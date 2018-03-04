@@ -1,10 +1,10 @@
 import { flow, types } from 'mobx-state-tree';
-import { LoadingStore } from 'src/stores/Loading';
+import { LoadingStore } from '../../stores/Loading';
 import { CourseItem } from './item';
 import { fetchCoursesList } from './services';
 
 const CoursesState = types
-  .model('Courses', {
+  .model({
     courses: types.maybe(types.array(CourseItem))
   })
   .views((self) => {
@@ -34,7 +34,8 @@ const CoursesStore = types
         self.courses = data;
       })
     };
-  });
+  })
+  .named('Courses');
 
 type CoursesStoreType = typeof CoursesStore.Type;
 export interface ICoursesStore extends CoursesStoreType { }

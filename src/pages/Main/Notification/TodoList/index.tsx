@@ -13,7 +13,7 @@ interface ITodosListProps extends RouteConfigComponentProps<{}> {
 }
 
 @inject('$Global', '$Todos')
-@withHeaderRoom<ITodosListProps>((props) => '所有待办')
+@withHeaderRoom<ITodosListProps>(() => '所有待办')
 @observer
 export default class TodoList extends React.Component<ITodosListProps> {
 
