@@ -4,3 +4,7 @@ import { IMatrixResponse, xios } from '../axios';
 export function fetchCourseDetail(courseId: number) {
   return xios.get<IMatrixResponse<any>>(`/api/courses/${courseId}`);
 }
+
+export function fetchCourseMembers(courseId: number) {
+  return xios.get<IMatrixResponse<any[]>>(`/api/courses/${courseId}/members`);
+}

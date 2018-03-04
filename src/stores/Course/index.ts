@@ -1,11 +1,32 @@
 import { flow, types } from 'mobx-state-tree';
-import { fetchCourseDetail } from '../../stores/Course/services';
-import { CourseDetail } from '../../stores/Course/type';
-import { LoadingStore } from '../../stores/Loading';
+import { MemberState } from '../Course/members';
+import { fetchCourseDetail, fetchCourseMembers } from '../Course/services';
+import { CourseDetail } from '../Course/type';
+import { LoadingStore } from '../Loading';
 
 const CourseState = types
   .model({
-    detail: types.maybe(CourseDetail)
+    detail: types.maybe(CourseDetail),
+    members: types.maybe(types.array(MemberState))
+  })
+  .views((self) => {
+    return {
+      get teachers() {
+        if (self.members) {
+          return self.members.filter(({ role }) => role === 'teacher');
+        }
+      },
+      get TAs() {
+        if (self.members) {
+          return self.members.filter(({ role }) => role === 'TA');
+        }
+      },
+      get students() {
+        if (self.members) {
+          return self.members.filter(({ role }) => role === 'student');
+        }
+      }
+    };
   });
 
 type CourseStateType = typeof CourseState.Type;
@@ -18,6 +39,10 @@ const CourseStore = types
       LoadOneCourseAsync: flow(function* LoadOneCourseAsync(courseId: number) {
         const { data: { data } } = yield fetchCourseDetail(courseId);
         self.detail = data;
+      }),
+      LoadMembersAsync: flow(function* LoadMembersAsync(courseId: number) {
+        const { data: { data } } = yield fetchCourseMembers(courseId);
+        self.members = data;
       })
     };
   })
