@@ -1,12 +1,13 @@
 import { Avatar } from 'antd';
 import { autorun, computed } from 'mobx';
-import { inject, observer } from 'mobx-react';
+import { inject, observer, Provider } from 'mobx-react';
+import { destroy } from 'mobx-state-tree';
 import React from 'react';
 import { renderRoutes, RouteConfigComponentProps } from 'react-router-config';
 import { IDescriptionItem } from '../../../components/common/Descriptions';
 import PageContainer from '../../../components/common/PageHeader/pageContainer';
 import withHeaderRoom from '../../../components/header/HeaderRoom/decorator';
-import { ICourseStore } from '../../../stores/Course';
+import { CourseStore, ICourseStore } from '../../../stores/Course';
 import { IGlobalStore } from '../../../stores/Global';
 
 const RoleMap = {
@@ -17,89 +18,91 @@ const RoleMap = {
 
 interface IOneCourseProps extends RouteConfigComponentProps<{ course_id: string }> {
   $Global?: IGlobalStore;
-  $Course?: ICourseStore;
 }
 
-@inject('$Global', '$Course')
+@inject('$Global')
 @withHeaderRoom<IOneCourseProps>(() => '课程')
 @observer
 export default class OneCourse extends React.Component<IOneCourseProps> {
 
+  $Course: ICourseStore = CourseStore.create();
+
+  disposer = autorun(() => {
+    const { $Global } = this.props;
+    if (this.$Course.detail && this.$Course.detail!.course_name) {
+      $Global!.setHeaderText(this.$Course.detail!.course_name);
+    }
+  });
+
   @computed
   get title() {
-    const { $Course, $Global } = this.props;
-    return $Course!.detail && $Course!.detail!.course_name || '课程';
+    const { $Global } = this.props;
+    return this.$Course.detail && this.$Course.detail!.course_name || '课程';
   }
 
   @computed
   get meta(): IDescriptionItem[] {
-    const { $Course } = this.props;
-    return $Course!.detail && [
+    return this.$Course.detail && [
       {
         term: '教师',
         key: 'teacher',
         icon: 'contacts',
-        value: $Course!.detail!.teacher
+        value: this.$Course.detail!.teacher
       },
       {
         term: '学期',
         key: 'school_year',
         icon: 'calendar',
-        value: `${$Course!.detail!.school_year} ${$Course!.detail!.term}`
+        value: `${this.$Course.detail!.school_year} ${this.$Course.detail!.term}`
       },
       {
         term: '我的角色',
         key: 'my-role',
         icon: 'user',
-        value: RoleMap[ $Course!.detail!.role ]
+        value: RoleMap[ this.$Course.detail!.role ]
       }
     ] || [];
   }
 
   @computed
   get Avatar() {
-    const { $Course } = this.props;
     let src: string | undefined;
-    if ($Course!.detail) {
-      src = `/api/users/profile/avatar?username=${$Course!.detail!.creator!.username}`;
+    if (this.$Course.detail) {
+      src = `/api/users/profile/avatar?username=${this.$Course.detail!.creator!.username}`;
     }
     return (
       <Avatar icon={ 'user' } src={ src } />
     );
   }
 
-  disposer = autorun(() => {
-    const { $Course, $Global } = this.props;
-    if ($Course!.detail && $Course!.detail!.course_name) {
-      $Global!.setHeaderText($Course!.detail!.course_name);
-    }
-  });
-
   async componentDidMount() {
-    const { $Course, $Global, match } = this.props;
+    const { $Global, match } = this.props;
     const courseId = Number.parseInt(match.params.course_id);
     await Promise.all([
-      $Course!.LoadOneCourseAsync(courseId),
-      $Course!.LoadMembersAsync(courseId)
+      this.$Course.LoadOneCourseAsync(courseId),
+      this.$Course.LoadMembersAsync(courseId)
     ]);
 
   }
 
   componentWillUnmount() {
     this.disposer();
+    destroy(this.$Course);
   }
 
   render() {
-    const { route, $Course } = this.props;
+    const { route } = this.props;
     return (
-      <PageContainer
-        title={ this.title }
-        loading={ $Course!.$loading.get('LoadOneCourseAsync') }
-        dataSource={ this.meta }
-        logo={ this.Avatar }
-      >
-        { renderRoutes(route!.routes) }
-      </PageContainer>
+      <Provider $Course={ this.$Course }>
+        <PageContainer
+          title={ this.title }
+          loading={ this.$Course.$loading.get('LoadOneCourseAsync') }
+          dataSource={ this.meta }
+          logo={ this.Avatar }
+        >
+          { renderRoutes(route!.routes) }
+        </PageContainer>
+      </Provider>
     );
   }
 }

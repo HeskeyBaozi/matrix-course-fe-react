@@ -32,7 +32,7 @@ const CourseState = types
 type CourseStateType = typeof CourseState.Type;
 export interface ICourseState extends CourseStateType { }
 
-const CourseStore = types
+export const CourseStore = types
   .compose(CourseState, LoadingStore)
   .actions((self: ICourseState) => {
     return {
@@ -50,5 +50,3 @@ const CourseStore = types
 
 type CourseStoreType = typeof CourseStore.Type;
 export interface ICourseStore extends CourseStoreType { }
-
-export const courseStore: ICourseStore = CourseStore.create();
