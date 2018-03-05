@@ -6,6 +6,7 @@ import createMenu from '../../components/menu/GeneralMenu';
 import { dynamic } from '../../utils/dynamic';
 import { routes as courseRoutes } from './Course/router';
 import { routes as coursesRoutes } from './Courses/router';
+import { routes as discussionRoutes } from './Discussion/router';
 import { routes as homeRoutes } from './Home/router';
 import { routes as notificationRoutes } from './Notification/router';
 
@@ -22,6 +23,12 @@ export const routes: IRouteConfigWithBreadcrumb[] = [
     component: dynamic(() => import('./Courses')),
     breadcrumbName: '所有课程',
     routes: coursesRoutes
+  },
+  {
+    path: '/course/:course_id/discussion/:discussion_id',
+    component: dynamic(() => import('./Discussion')),
+    breadcrumbName: '讨论详情',
+    routes: discussionRoutes
   },
   {
     path: '/course/:course_id',
@@ -48,7 +55,11 @@ export const menuRoutes: RouteConfig[] = [
       dataSource: ({ course_id }) => ([
         { url: `/course/${course_id}/home`, icon: 'home', title: '概览' },
         { url: `/course/${course_id}/assignments`, icon: 'edit', title: '作业' },
-        { url: `/course/${course_id}/discussions`, icon: 'coffee', title: '讨论' }
+        {
+          url: `/course/${course_id}/discussions`,
+          path: '/course/:course_id/discussion(s?)/:discussion_id?',
+          icon: 'coffee', title: '讨论'
+        }
       ]),
       returnTo: () => '/courses'
     })

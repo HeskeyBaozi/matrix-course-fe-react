@@ -66,7 +66,7 @@ function renderPicture({ src }: { src: string }) {
 function renderCode(props: { value: string, language: string }) {
   return (
     <CodeBlock
-      className={ styles.code }
+      className={ styles.codeBlock }
       value={ props.value }
       markdown={ true }
       readOnly={ true }

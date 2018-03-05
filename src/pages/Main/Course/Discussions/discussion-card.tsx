@@ -56,14 +56,14 @@ class DiscussionCard extends React.Component<IDiscussionCardProps> {
   get Actions() {
     const { vote_great, answers, id } = this.props.item;
     const { course_id } = this.props.match.params;
-    return [
-      <span key={ 'likes' }><Icon type={ 'like-o' } /> { (vote_great || 0) }</span>,
-      (
-        <Link to={ `/course/${course_id}/discussion/${id}` } key={ 'answers' }>
-          <Icon type={ 'message' } /> { answers || 0 }
-        </Link>
-      )
-    ];
+    return [ (
+      <span key={ 'likes' }>
+        <Icon type={ 'like-o' } /> { (vote_great || 0) } 个赞同
+      </span>), (
+      <Link to={ `/course/${course_id}/discussion/${id}` } key={ 'answers' }>
+        <Icon type={ 'message' } /> { answers || 0 } 个回复
+      </Link>
+    ) ];
   }
 
   @computed
@@ -87,7 +87,7 @@ class DiscussionCard extends React.Component<IDiscussionCardProps> {
     const { course_id } = this.props.match.params;
     const { prob_title } = this.props.item;
     return (
-      <Card actions={ this.Actions } title={ this.Title } >
+      <Card actions={ this.Actions } title={ this.Title } className={ styles.actionsDefault } >
         <Descriptions dataSource={ this.dataSource } col={ 2 } />
       </Card>
     );

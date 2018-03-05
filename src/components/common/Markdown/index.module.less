@@ -1,19 +1,25 @@
-@import "../../../../node_modules/antd/lib/style/themes/default.less";
-
+@import '../../../../node_modules/antd/lib/style/themes/default.less';
 .image {
-  max-width: 100%
+  max-width: 100%;
 }
 
 .codeFamily {
   font-family: @code-family !important;
 }
 
+.codeBlock {
+  &:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+}
+
 .inlineCode {
-  background-color: rgba(0, 0, 0, .05) !important;
-  padding: .2rem .3rem !important;
   margin: 0 .2rem !important;
-  border-radius: 2px !important;
+  padding: .2rem .3rem !important;
+
   color: @primary-color !important;
+  border-radius: 2px !important;
+  background-color: rgba(0, 0, 0, .05) !important;
 }
 
 .math {
@@ -23,14 +29,13 @@
 .table {
   width: 100%;
   margin: 1rem 0;
-  > thead {
+   > thead {
     border-bottom: 1px solid mix(@primary-color, white, 20%);
   }
-  th,
-  td {
+  th, td {
     padding: .5rem;
   }
-  > tbody {
+   > tbody {
     tr {
       transition: all 200ms;
       &:hover {
