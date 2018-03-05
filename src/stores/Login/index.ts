@@ -4,11 +4,12 @@ import { ILoginBody, ILoginQueryResult, ILoginResult } from './interfaces';
 import { fetchAvatar, fetchCaptcha, fetchUserLoginState, loginPost } from './services';
 
 const LoginState = types
-  .model('Login', {
+  .model({
     isLogin: false,
     avatarUrl: '',
     captchaUrl: ''
-  });
+  })
+  .named('LoginState');
 
 type ILoginStateType = typeof LoginState.Type;
 
