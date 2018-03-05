@@ -12,6 +12,9 @@ const CommentState = types
   })
   .named('CommentState');
 
+type CommentStateType = typeof CommentState.Type;
+export interface ICommentState extends CommentStateType { }
+
 const VoteState = types
   .model({
     is_voted: types.maybe(types.union(types.literal(1), types.literal(0))),
