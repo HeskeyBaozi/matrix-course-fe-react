@@ -1,8 +1,8 @@
 import { flow, types } from 'mobx-state-tree';
-import { IDiscussionArgs, IVoteBody } from '../../stores/Discussion/interfaces';
+import { ICreateReplyBody, IDiscussionArgs, IVoteBody } from '../../stores/Discussion/interfaces';
 import { LoadingStore } from '../Loading';
-import { fetchDetail, postAnswerVote, postDiscusstionVote } from './services';
-import { DiscussionDetail } from './type';
+import { fetchDetail, postAnswerVote, postCreateReply, postDiscusstionVote } from './services';
+import { CommentState, DiscussionDetail } from './type';
 
 const DiscussionState = types
   .model({
@@ -37,6 +37,21 @@ export const DiscussionStore = types
           const target = self.detail.answer.find(({ id }) => id === body.id);
           if (target) {
             target.applyVote(body.action);
+          }
+        }
+      }),
+      CreateReplyAsync: flow(function* CreateReplyAsync(args: IDiscussionArgs, body: ICreateReplyBody) {
+        const { data: { data, time, paramData, status } } = yield postCreateReply(args, body);
+        if (self.detail && status === 'OK') {
+          const target = self.detail!.answer.find(({ id }) => id === body.id);
+          if (target) {
+            target.comment.push(CommentState.create({
+              date: time,
+              description: body.description,
+              nickname: '我',
+              user_id: paramData && paramData.user && paramData.user.user_id || 0,
+              username: paramData && paramData.user && paramData.user.username || ''
+            }));
           }
         }
       })

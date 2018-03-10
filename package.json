@@ -68,7 +68,7 @@
   },
   "proxy": {
     "/api/*": {
-      "target": "https://vmatrix.org.cn",
+      "target": "http://test.vmatrix.org.cn",
       "secure": false,
       "changeOrigin": true,
       "cookieDomainRewrite": "",

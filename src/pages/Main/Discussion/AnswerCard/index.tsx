@@ -1,21 +1,25 @@
-import { Avatar, Button, Card, Divider, Icon, Input, List, Tooltip } from 'antd';
+import { Avatar, Button, Card, Divider, Form, Icon, Input, List, Mention, Tooltip } from 'antd';
+import { FormComponentProps } from 'antd/es/form';
 import { format } from 'date-fns/esm';
-import { action, computed, observable } from 'mobx';
+import { action, computed, expr, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
+import { ICourseStore } from 'src/stores/Course';
 import Markdown from '../../../../components/common/Markdown';
 import VoteBox from '../../../../components/common/VoteBox';
 import { IDiscussionStore } from '../../../../stores/Discussion';
 import { IAnswerState, ICommentState } from '../../../../stores/Discussion/type';
 import CommentCard from './CommentCard';
 
-interface IAnswerCardProps extends RouteComponentProps<{ course_id: string, discussion_id: string }> {
+interface IAnswerCardProps extends RouteComponentProps<{ course_id: string, discussion_id: string }>,
+  FormComponentProps {
   $Discussion?: IDiscussionStore;
+  $Course?: ICourseStore;
   item: IAnswerState;
 }
 
-@inject('$Discussion')
+@inject('$Discussion', '$Course')
 @observer
 class AnswerCard extends React.Component<IAnswerCardProps> {
 
@@ -31,29 +35,16 @@ class AnswerCard extends React.Component<IAnswerCardProps> {
   isCommentsShown = false;
 
   @observable
-  replyText = '';
-
-  @observable
   currentPage = 1;
 
   @computed
   get limit() {
-    return 120;
+    return 100;
   }
 
   @action
   handlePaginationChange = (next: number) => {
     this.currentPage = next;
-  }
-
-  @action
-  handleReplyChange = (e: SyntheticEvent<HTMLTextAreaElement>) => {
-    this.replyText = e.currentTarget.value;
-  }
-
-  @computed
-  get canReply() {
-    return this.replyText.length > 0 && this.replyText.length <= this.limit;
   }
 
   @computed
@@ -62,11 +53,16 @@ class AnswerCard extends React.Component<IAnswerCardProps> {
     return {
       showQuickJumper: true,
       current: this.currentPage,
-      pageSize: 8,
+      pageSize: 5,
       size: 'small',
       total: comment && comment.length || 0,
       onChange: this.handlePaginationChange
     };
+  }
+
+  @computed
+  get lastPage() {
+    return Math.ceil(this.pagination.total / this.pagination.pageSize);
   }
 
   @computed
@@ -102,9 +98,67 @@ class AnswerCard extends React.Component<IAnswerCardProps> {
     await $Discussion!.VoteAnswerAsync(args, body);
   }
 
+  @computed
+  get suggestions() {
+    const { $Course } = this.props;
+    return $Course!.members && $Course!.members!.map(({ nickname, username }) => nickname || username) || [];
+  }
+
+  checkMention = (rule: any, value: any, callback: any) => {
+    const { getFieldValue } = this.props.form;
+    const description = Mention.toString(getFieldValue('mention'));
+    if (description.length > this.limit) {
+      callback(new Error(`内容必须在${this.limit}字以内, 当前${description.length}字`));
+    } else {
+      callback();
+    }
+  }
+
+  @computed
+  get Mention() {
+    const { form, $Discussion } = this.props;
+    return form.getFieldDecorator('mention', {
+      rules: [ { validator: this.checkMention }],
+      initialValue: Mention.toContentState('')
+    })(
+      <Mention
+        disabled={ $Discussion!.$loading!.get('CreateReplyAsync') }
+        suggestions={ this.suggestions.slice() }
+        placeholder={ `回复层主 ( ${this.limit}字符以内 )` }
+      />
+      );
+  }
+
+  handleSubmit = () => {
+    const { form, $Course, $Discussion, item, match } = this.props;
+    form.validateFields(async (errors, values) => {
+      if (!errors && values.mention) {
+        const args = {
+          course_id: Number.parseInt(match.params.course_id),
+          discussion_id: Number.parseInt(match.params.discussion_id)
+        };
+        const description = Mention.toString(values.mention);
+        const users = (Mention.getMentions(values.mention) as string[])
+          .map((mentionName) => {
+            const nickname = mentionName.replace(/^@/, '');
+            return $Course!.members && $Course!.members!.find((one) => one.nickname === nickname);
+          })
+          .filter((target) => target)
+          .map((target) => target!.user_id);
+        await $Discussion!.CreateReplyAsync(args, {
+          id: item.id,
+          description,
+          users
+        });
+        form.resetFields();
+        this.handlePaginationChange(this.lastPage);
+      }
+    });
+  }
+
   render() {
     const { username, nickname, date, description, is_voted, vote_bad, vote_great, comment } = this.props.item;
-    const { $Discussion } = this.props;
+    const { $Discussion, $Course } = this.props;
     return (
       <Card>
         <Card.Meta
@@ -140,27 +194,27 @@ class AnswerCard extends React.Component<IAnswerCardProps> {
             dataSource={ this.pagedDataSource }
             renderItem={ AnswerCard.renderItem }
           />
-          <Input.TextArea
-            style={ { marginTop: '1rem' } }
-            autosize={ true }
-            placeholder={ `回复层主 ( ${this.limit}字符以内 )` }
-            value={ this.replyText }
-            onChange={ this.handleReplyChange }
-          />
-          <Button
-            style={ { marginTop: '1rem', marginRight: '1rem' } }
-            icon={ 'upload' }
-            type={ 'primary' }
-            disabled={ !this.canReply }
-          >提交
-          </Button>
-          <Tooltip title={ `当前${this.replyText.length}字符, ${this.canReply ? '可' : '不可'}提交` } placement={ 'right' }>
-            <Icon type={ 'question-circle-o' } />
-          </Tooltip>
+          <Form style={ { marginTop: '1rem' } }>
+            <Form.Item>
+              { this.Mention }
+              <Button
+                style={ { marginTop: '1rem', marginRight: '1rem' } }
+                icon={ 'upload' }
+                type={ 'primary' }
+                loading={ $Discussion!.$loading!.get('CreateReplyAsync') }
+                onClick={ this.handleSubmit }
+              >
+                提交
+              </Button>
+              <Tooltip title={ `${this.limit}字符以内才可提交` } placement={ 'right' }>
+                <Icon type={ 'question-circle-o' } />
+              </Tooltip>
+            </Form.Item>
+          </Form>
         </div>
       </Card>
     );
   }
 }
 
-export default withRouter(AnswerCard);
+export default Form.create()(withRouter(AnswerCard));

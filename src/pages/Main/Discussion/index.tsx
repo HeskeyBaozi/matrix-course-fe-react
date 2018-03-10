@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { IDescriptionItem } from '../../../components/common/Descriptions';
 import PageContainer from '../../../components/common/PageHeader/pageContainer';
 import withHeaderRoom from '../../../components/header/HeaderRoom/decorator';
+import { CourseStore, ICourseStore } from '../../../stores/Course';
 import { DiscussionStore, IDiscussionStore } from '../../../stores/Discussion';
 import { IGlobalStore } from '../../../stores/Global';
 
@@ -22,6 +23,7 @@ interface IOneDiscussionProps extends RouteConfigComponentProps<{ course_id: str
 export default class OneCourse extends React.Component<IOneDiscussionProps> {
 
   $Discussion: IDiscussionStore = DiscussionStore.create();
+  $Course: ICourseStore = CourseStore.create();
 
   disposer = autorun(() => {
     const { $Global } = this.props;
@@ -78,19 +80,21 @@ export default class OneCourse extends React.Component<IOneDiscussionProps> {
       discussion_id: Number.parseInt(match.params.discussion_id)
     };
     await Promise.all([
-      this.$Discussion.LoadDetailAsync(args)
+      this.$Discussion.LoadDetailAsync(args),
+      this.$Course!.LoadMembersAsync(args.course_id)
     ]);
   }
 
   componentWillUnmount() {
     this.disposer();
     destroy(this.$Discussion);
+    destroy(this.$Course);
   }
 
   render() {
     const { route } = this.props;
     return (
-      <Provider $Discussion={ this.$Discussion }>
+      <Provider $Discussion={ this.$Discussion } $Course={ this.$Course }>
         <PageContainer
           title={ this.title }
           loading={ this.$Discussion.$loading.get('LoadDetailAsync') }

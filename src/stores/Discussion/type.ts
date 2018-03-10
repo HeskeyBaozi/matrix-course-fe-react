@@ -2,7 +2,7 @@ import { types } from 'mobx-state-tree';
 import { CourseItem } from '../Courses/item';
 import { UserState } from '../Profile/user';
 
-const CommentState = types
+export const CommentState = types
   .model({
     date: types.string,
     description: types.string,
