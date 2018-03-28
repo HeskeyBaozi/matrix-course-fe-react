@@ -1,4 +1,5 @@
 import { Card, Icon, Input, List, Radio } from 'antd';
+import { RadioChangeEvent } from 'antd/es/radio';
 import { compareAsc } from 'date-fns/esm';
 import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
@@ -38,7 +39,7 @@ export default class CourseDiscussions extends React.Component<ICourseDiscussion
   currentPage = 1;
 
   @action
-  handleSorterChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleSorterChange = (e: RadioChangeEvent) => {
     this.sorter = e.target.value as SorterType;
     this.currentPage = 1;
   }

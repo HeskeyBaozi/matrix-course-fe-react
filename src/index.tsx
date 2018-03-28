@@ -1,11 +1,13 @@
-import { useStrict } from 'mobx';
+import { configure } from 'mobx';
 import React from 'react';
 import { render } from 'react-dom';
 import './index.less';
 import App from './pages/index';
 import registerServiceWorker from './registerServiceWorker';
 
-useStrict(true);
+configure({
+  enforceActions: true
+});
 
 render(
   <App />,

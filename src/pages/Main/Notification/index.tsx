@@ -1,5 +1,5 @@
 import { Badge } from 'antd';
-import { computed, expr, observable } from 'mobx';
+import { computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import pathToRegExp from 'path-to-regexp';
 import React from 'react';
@@ -21,16 +21,16 @@ export default class Notification extends React.Component<INotificationProps> {
     const { $Notification } = this.props;
     return [
       {
-        key: 'messages', tab: expr(() => (
+        key: 'messages', tab: (
           <Badge dot={ Boolean($Notification!.unread) }>
             <IconText icon={ 'message' } gutter={ .3 } title={ '消息' } />
           </Badge>
-        ))
+        )
       },
       {
-        key: 'todos', tab: expr(() => (
+        key: 'todos', tab: (
           <IconText icon={ 'pushpin-o' } gutter={ .3 } title={ '待办' } />
-        ))
+        )
       }
     ];
   }
@@ -38,7 +38,7 @@ export default class Notification extends React.Component<INotificationProps> {
   @computed
   get activeKey() {
     const { location } = this.props;
-    const tokens = expr(() => pathToRegExp('/notification/:type')).exec(location.pathname);
+    const tokens = pathToRegExp('/notification/:type').exec(location.pathname);
     if (tokens) {
       return tokens[ 1 ];
     }

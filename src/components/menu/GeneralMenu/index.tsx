@@ -1,6 +1,6 @@
 import { Menu } from 'antd';
 import { ClickParam } from 'antd/es/menu';
-import { computed, expr, extendObservable } from 'mobx';
+import { computed, extendObservable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import pathToRegexp from 'path-to-regexp';
 import React from 'react';
@@ -31,7 +31,10 @@ export default function createMenu<P>({ dataSource, returnTo }: ICreateMenu<P>)
   : React.ComponentType<IGeneralMenuProps<P> | {}> {
   return inject('$Global')(observer(
     class InnerMenu extends React.Component<IGeneralMenuProps<P>> {
-      dataSourceWithRegExp: Array<{ url: string, reg: RegExp }>;
+      dataSourceWithRegExp!: Array<{
+        url: string;
+        reg: RegExp;
+      }>;
       List: React.ReactNode;
       ReturnTo: React.ReactNode | null;
       constructor(props: IGeneralMenuProps<P> | {}) {
@@ -76,14 +79,12 @@ export default function createMenu<P>({ dataSource, returnTo }: ICreateMenu<P>)
 
       render() {
         const { $Global, location } = this.props;
-        const selectedKeys = expr(() => {
-          return this.dataSourceWithRegExp
-            /**
-             * convert url(path) into regexp and test it to get current selected keys...
-             */
-            .filter(({ reg }) => reg.test(location.pathname))
-            .map(({ url }) => url);
-        });
+        const selectedKeys = this.dataSourceWithRegExp
+          /**
+           * convert url(path) into regexp and test it to get current selected keys...
+           */
+          .filter(({ reg }) => reg.test(location.pathname))
+          .map(({ url }) => url);
         return (
           <Menu
             className={ styles.menu }

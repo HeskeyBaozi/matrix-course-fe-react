@@ -1,7 +1,7 @@
 import { Avatar, Button, Card, Divider, Form, Icon, Input, List, Mention, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
 import { format } from 'date-fns/esm';
-import { action, computed, expr, observable } from 'mobx';
+import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
 import { RouteComponentProps, withRouter } from 'react-router';
@@ -118,7 +118,7 @@ class AnswerCard extends React.Component<IAnswerCardProps> {
   get Mention() {
     const { form, $Discussion } = this.props;
     return form.getFieldDecorator('mention', {
-      rules: [ { validator: this.checkMention }],
+      rules: [ { validator: this.checkMention } ],
       initialValue: Mention.toContentState('')
     })(
       <Mention
@@ -126,7 +126,7 @@ class AnswerCard extends React.Component<IAnswerCardProps> {
         suggestions={ this.suggestions.slice() }
         placeholder={ `回复层主 ( ${this.limit}字符以内 )` }
       />
-      );
+    );
   }
 
   handleSubmit = () => {

@@ -1,4 +1,5 @@
 import { Card, Icon, Input, List, Radio } from 'antd';
+import { RadioChangeEvent } from 'antd/es/radio';
 import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
@@ -90,7 +91,7 @@ export default class CoursesList extends React.Component<ICoursesListProps> {
   }
 
   @action
-  handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleStatusChange = (e: RadioChangeEvent) => {
     const { history } = this.props;
     history.push(`/courses/${e.target.value}`);
     this.currentPage = 1;

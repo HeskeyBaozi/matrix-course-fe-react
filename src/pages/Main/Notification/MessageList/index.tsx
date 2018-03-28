@@ -1,4 +1,5 @@
 import { Avatar, Badge, Button, Card, Divider, Icon, Input, List, Radio, Select, Tooltip } from 'antd';
+import { RadioChangeEvent } from 'antd/es/radio';
 import { action, computed, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
@@ -154,7 +155,7 @@ export default class NotificationList extends React.Component<INotificationListP
   }
 
   @action
-  handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  handleStatusChange = (e: RadioChangeEvent) => {
     this.filter.status = e.target.value as MessageStatusFilter;
     this.page.current = 1;
   }

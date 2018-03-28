@@ -1,8 +1,8 @@
 import { flow, types } from 'mobx-state-tree';
-import { ICreateReplyBody, IDiscussionArgs, IVoteBody } from '../../stores/Discussion/interfaces';
+import { ICreateAnswerBody, ICreateReplyBody, IDiscussionArgs, IVoteBody } from '../../stores/Discussion/interfaces';
 import { LoadingStore } from '../Loading';
-import { fetchDetail, postAnswerVote, postCreateReply, postDiscusstionVote } from './services';
-import { CommentState, DiscussionDetail } from './type';
+import { fetchDetail, postAnswerVote, postCreateAnswer, postCreateReply, postDiscusstionVote } from './services';
+import { AnswerState, CommentState, DiscussionDetail } from './type';
 
 const DiscussionState = types
   .model({
@@ -53,6 +53,21 @@ export const DiscussionStore = types
               username: paramData && paramData.user && paramData.user.username || ''
             }));
           }
+        }
+      }),
+      CreateAnswerAsync: flow(function* CreateAnswerAsync(args: IDiscussionArgs, body: ICreateAnswerBody) {
+        const { data: { data, status, time, paramData, msg } } = yield postCreateAnswer(args, body);
+        if (self.detail && status === 'OK') {
+          const execResult = msg && /\d+/.exec(msg) || null;
+          self.detail!.answer.push(AnswerState.create({
+            date: time,
+            description: body.description,
+            nickname: '我',
+            user_id: paramData && paramData.user && paramData.user.user_id || 0,
+            username: paramData && paramData.user && paramData.user.username || '',
+            comment: [],
+            id: execResult && Number.parseInt(execResult[ 0 ]) || 0
+          }));
         }
       })
     };

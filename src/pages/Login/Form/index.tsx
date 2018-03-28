@@ -1,6 +1,6 @@
 import { Button, Form, Icon, Input, notification, Tooltip } from 'antd';
 import { FormComponentProps } from 'antd/es/form';
-import { action, autorunAsync, computed, IReactionDisposer, observable } from 'mobx';
+import { action, autorun, computed, IReactionDisposer, observable } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import React, { SyntheticEvent } from 'react';
 import { RouteConfigComponentProps } from 'react-router-config';
@@ -23,7 +23,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
   @observable
   username = '';
 
-  disposer: IReactionDisposer;
+  disposer: IReactionDisposer | undefined;
 
   @action
   handleUsernameChange = (e: SyntheticEvent<HTMLInputElement>) => {
@@ -55,7 +55,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
 
           // When login with wrong captcha or wrong password...
         } else if (result && (result.status === 'WRONG_CAPTCHA'
-            && $Login!.captchaUrl || result.status === 'WRONG_PASSWORD')) {
+          && $Login!.captchaUrl || result.status === 'WRONG_PASSWORD')) {
           notification.error({
             description: result.msg || '登录错误',
             message: '登录失败'
@@ -75,8 +75,8 @@ class LoginForm extends React.Component<ILoginFormProps> {
     const { $Login } = this.props;
     return (
       <Item className={ styles.avatarWrapper }>
-        <Loading loading={ $Login!.$loading.get('LoadAvatarAsync') }/>
-        <img src={ $Login!.avatarUrl || defaultAvatarUrl }/>
+        <Loading loading={ $Login!.$loading.get('LoadAvatarAsync') } />
+        <img src={ $Login!.avatarUrl || defaultAvatarUrl } />
       </Item>
     );
   }
@@ -87,7 +87,13 @@ class LoginForm extends React.Component<ILoginFormProps> {
     const input = (
       getFieldDecorator('username', {
         rules: [ { required: true, message: '请输入用户名' } ]
-      })(<Input onChange={ this.handleUsernameChange } placeholder={ 'Username' } prefix={ <Icon type={ 'user' }/> }/>)
+      })(
+        <Input
+          onChange={ this.handleUsernameChange }
+          placeholder={ 'Username' }
+          prefix={ <Icon type={ 'user' } /> }
+        />
+      )
     );
     return <Item>{ input }</Item>;
   }
@@ -98,7 +104,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
     const input = (
       getFieldDecorator('password', {
         rules: [ { required: true, message: '请输入密码' } ]
-      })(<Input type={ 'password' } placeholder={ 'Password' } prefix={ <Icon type={ 'lock' }/> }/>)
+      })(<Input type={ 'password' } placeholder={ 'Password' } prefix={ <Icon type={ 'lock' } /> } />)
     );
     return <Item>{ input }</Item>;
   }
@@ -110,7 +116,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
     const input = (
       getFieldDecorator('captcha', {
         rules: [ { required: Boolean($Login!.captchaUrl), message: '请输入验证码' } ]
-      })(<Input placeholder={ 'Captcha' } prefix={ <Icon type='edit'/> }/>)
+      })(<Input placeholder={ 'Captcha' } prefix={ <Icon type='edit' /> } />)
     );
 
     return (
@@ -119,7 +125,7 @@ class LoginForm extends React.Component<ILoginFormProps> {
           { input }
           <Tooltip title={ '点击以更换验证码' } trigger={ 'hover' }>
             <div className={ styles.captchaImageWrapper }>
-              <Loading loading={ $Login!.$loading.get('LoadCaptchaAsync') }/>
+              <Loading loading={ $Login!.$loading.get('LoadCaptchaAsync') } />
               <img
                 onClick={ this.handleCaptchaChange }
                 className={ styles.captcha }
@@ -151,11 +157,11 @@ class LoginForm extends React.Component<ILoginFormProps> {
 
   componentDidMount() {
     const { $Login } = this.props;
-    this.disposer = autorunAsync('ReFetch avatar when username changes...', () => {
+    this.disposer = autorun(() => {
       if (this.username.length > 5) {
         $Login!.LoadAvatarAsync(this.username);
       }
-    }, 1500);
+    }, { delay: 1500 });
   }
 
   componentWillUnmount() {

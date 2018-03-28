@@ -78,7 +78,7 @@ const VoteState = types
   })
   .named('VoteState');
 
-const AnswerState = types
+export const AnswerState = types
   .compose(CommentState, VoteState, types.model({
     comment: types.array(CommentState),
     id: types.number
